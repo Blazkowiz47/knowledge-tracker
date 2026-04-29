@@ -1,0 +1,14 @@
+.DS_Store
+
+# Obsidian local state
+.obsidian/workspace*
+.obsidian/cache/
+
+# Local editor/runtime noise
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Large or generated local artifacts should be linked from notes, not committed here.
+*.log
