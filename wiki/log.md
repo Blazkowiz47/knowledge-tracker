@@ -1,7 +1,5 @@
 # Knowledge Base Log
 
-Append meaningful curation, project memory initialization, daily ingestion, and structural changes here.
+The canonical log overview is now [[logs/index|Logs]].
 
-## 2026-04-30
-
-- Initialized the main knowledge base structure.
+Use `wiki/logs/index.md` as the default startup surface. Detailed daily logs live under `wiki/logs/YYYY/MM/DD.md`.

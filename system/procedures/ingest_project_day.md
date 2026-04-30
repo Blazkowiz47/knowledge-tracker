@@ -15,11 +15,12 @@ Usually:
 
 ## Steps
 
-1. Identify candidate project notes:
+1. Follow `system/procedures/maintain_daily_log.md` so today's knowledge-base daily log exists.
+2. Identify candidate project notes:
    - `memory/notes/YYYY-MM-DD.md`
    - `memory/notes/YYYY-MM-DD-<device>.md`
-2. Read the matching notes and the project `memory/index.md`.
-3. Extract:
+3. Read the matching notes and the project `memory/index.md`.
+4. Extract:
    - Work done
    - Experiments or runs
    - Results
@@ -28,10 +29,10 @@ Usually:
    - Blockers
    - Next actions
    - Device/server/path information
-4. Update the relevant `wiki/workstreams/<workstream>/index.md` context card.
-5. Update or create compact sections for recent work, recent runs, learnings, decisions, blockers, and next actions.
-6. Update `wiki/today.md` or create a date-specific daily summary if requested.
-7. Append an ingestion entry to `wiki/log.md`.
+5. Update the relevant `wiki/workstreams/<workstream>/index.md` context card.
+6. Update or create compact sections for recent work, recent runs, learnings, decisions, blockers, and next actions.
+7. Update `wiki/today.md` or create a date-specific daily summary if requested.
+8. Append an ingestion entry to today's detailed log at `wiki/logs/YYYY/MM/DD.md`.
 
 ## Rules
 
@@ -40,3 +41,4 @@ Usually:
 - Promote only cross-project ideas into global wiki pages.
 - Preserve links and absolute paths for traceability.
 - If project notes conflict, record the uncertainty instead of silently choosing one.
+- Do not append detailed entries to `wiki/log.md`; it is only a pointer to `wiki/logs/index.md`.
