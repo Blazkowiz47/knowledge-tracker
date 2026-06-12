@@ -11,25 +11,16 @@ Latest useful result:
 Current blocker:
 Next action:
 
-## Today
-
-- 
-
 ## Active Threads
 
 - 
 
-## Recent Runs
+## Files
 
-- 
-
-## Learnings
-
-- 
-
-## Decisions
-
-- 
+- [[learnings|Learnings]]
+- [[decisions|Decisions]]
+- [[runs|Runs]]
+- [[logs|Logs]]
 
 ## Links
 

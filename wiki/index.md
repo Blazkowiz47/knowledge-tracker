@@ -1,11 +1,12 @@
-# Sushrut Brain
+# Knowledge Tracker
 
 This is the main index for the knowledge base.
 
 ## Start Here
 
 - [[today]] - current planning surface
-- [[inbox]] - temporary uncategorized notes
+- [[getting-started|Getting Started]] - first setup and daily loop
+- [[scratch/README|Scratch]] - temporary uncategorized notes
 - [[logs/index|Logs]] - compact log summaries and links to detailed daily logs
 - [[workstreams/index|Workstreams]] - active projects, methods, experiments, demos, and development efforts
 
@@ -14,7 +15,7 @@ This is the main index for the knowledge base.
 - Project memories are initialized from `system/procedures/initialise_project.md`.
 - Daily, monthly, and yearly knowledge-base logs are maintained through `system/procedures/maintain_daily_log.md`.
 - Project repositories keep date-wise operational notes in `memory/notes/`.
-- This brain ingests project memories into compact workstream summaries.
+- This knowledge base ingests project memories into compact workstream summaries.
 
 ## Maintenance Notes
 

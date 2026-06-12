@@ -1,6 +1,6 @@
 # Today
 
-Date: 2026-04-30
+Date: YYYY-MM-DD
 
 ## Plan
 

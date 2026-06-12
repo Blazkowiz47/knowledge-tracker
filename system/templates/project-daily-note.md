@@ -1,12 +1,17 @@
 ---
 date: {{DATE}}
+work_date: {{DATE}}
 project: {{PROJECT_NAME}}
-device: {{DEVICE}}
+node: {{NODE}}
+node_type:
+device:
 server:
+timezone:
 repo_path: {{PROJECT_PATH}}
 branch:
 commit:
 sync_status: draft
+source_format:
 tags: [{{TAGS}}]
 ---
 

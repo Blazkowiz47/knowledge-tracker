@@ -6,7 +6,7 @@ Status:
 Domain:
 Tags:
 Project path:
-Main brain workstream:
+Knowledge-base workstream:
 Devices/servers:
 Latest useful result:
 Current blocker:
@@ -31,6 +31,14 @@ Next action:
 ## Decisions
 
 - See `decisions.md`.
+
+## Commands
+
+- See `commands/index.md`.
+
+## Scratch
+
+- See `scratch/index.md` for unresolved project-local captures and in-flight notes.
 
 ## Links
 

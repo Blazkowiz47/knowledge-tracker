@@ -1,0 +1,17 @@
+# Example pending-ingestions queue for automated project-memory ingestion.
+#
+# Copy to `system/sync/pending-ingestions.yaml` when automation first detects
+# pending or deferred work. The live queue is intentionally committed only when
+# it records useful cross-device state.
+
+pending:
+  - project: example-project
+    work_date: YYYY-MM-DD
+    node: laptop
+    source: /path/to/example-project/memory/notes/YYYY-MM-DD-laptop.md
+    source_hash:
+    state: deferred
+    reason: model_limit
+    first_seen_at:
+    last_attempt_at:
+    attempts: 1

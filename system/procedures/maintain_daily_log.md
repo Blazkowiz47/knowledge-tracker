@@ -56,6 +56,10 @@ wiki/logs/YYYY/MM/DD.md
 - Keep entries compact. Link to evidence and workstream pages instead of pasting bulky logs or outputs.
 - Keep `wiki/logs/index.md` compact. It should point to useful monthly and yearly summaries, not duplicate daily details.
 
+## End-Of-Day Cleanup
+
+- Run `/organise-scratch` at the end of the day to sweep `wiki/scratch/` and route each captured note to its proper home. The routing pass typically appends a one-line entry to today's `wiki/logs/YYYY/MM/DD.md` summarising what was routed where, so prefer running it before finalizing the daily summary.
+
 ## Compatibility
 
 - Do not append detailed entries to `wiki/log.md`.
