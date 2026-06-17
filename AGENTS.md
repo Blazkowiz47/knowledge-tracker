@@ -15,7 +15,7 @@ This repository is the main knowledge base for the user's projects, research, ex
 
 - When operating from this knowledge-base repository, treat external project repositories as read-only by default.
 - The only default exception is explicit project memory initialization: when the user asks to initialize, initialise, set up, or add memory for a project path, Codex may update only that project's memory infrastructure.
-- During project memory initialization, allowed external-project edits are limited to the target project's `AGENTS.md` Knowledge Tracker memory block, `CLAUDE.md` symlink, and `memory/` files.
+- During project memory initialization, allowed external-project edits are limited to the target project's `AGENTS.md` Knowledge Tracker memory block, `CLAUDE.md` import stub, and `memory/` files.
 - Do not edit external project source code, experiment scripts, configs, data files, outputs, or unrelated documentation from a knowledge-base session.
 - Do not stage, commit, or push changes in external project repositories from a knowledge-base session, including project memory initialization changes.
 - If any other task would require modifying an external project repository, stop and ask the user to run Codex from that project repository or to explicitly override this boundary.
@@ -67,16 +67,16 @@ Do not invent a different project memory structure unless the user explicitly as
 ## Project Memory Initialization Rules
 
 - Existing project `AGENTS.md` files must be preserved.
-- `AGENTS.md` is the canonical instruction file for both Codex and Claude.
-- `CLAUDE.md` must be a relative symlink to `AGENTS.md` whenever possible.
-- When initializing project memory from this knowledge base, ensure the target project has `CLAUDE.md -> AGENTS.md` as a relative symlink after preserving any existing Claude-only instructions.
+- `AGENTS.md` is the canonical cross-agent instruction file.
+- `CLAUDE.md` must be a regular file that imports `AGENTS.md` with `@AGENTS.md` as its first line.
+- When initializing project memory from this knowledge base, ensure the target project has a `CLAUDE.md` import stub after preserving any existing Claude-only instructions below the import.
 - Add or update only the clearly delimited Knowledge Tracker memory block in project `AGENTS.md`:
   - `<!-- BEGIN KNOWLEDGE TRACKER MEMORY DIRECTIVES -->`
   - `<!-- END KNOWLEDGE TRACKER MEMORY DIRECTIVES -->`
 - If a project already has the block, replace only that block.
 - If a project has `AGENTS.md` but no block, append the block to the end.
 - If a project has no `AGENTS.md`, create one containing the block.
-- If a project has a regular `CLAUDE.md`, do not discard it. Preserve unique instructions by merging them into `AGENTS.md` when safe; if the merge is ambiguous, stop and ask the user.
+- If a project has an existing `CLAUDE.md`, do not discard it. Preserve unique Claude-only instructions below the `@AGENTS.md` import when safe; if the preservation is ambiguous, stop and ask the user.
 - Do not remove, rewrite, reorder, or weaken existing project-specific instructions.
 - Generate or maintain `memory/scratch/index.md` so project-local agents have a clear place for uncertain project-only captures and in-flight working notes.
 - Scratch-only project work should stay in `memory/scratch/`; agents should not create or update a project daily note unless the scratch result is promoted, a run/decision/learning/status changes, or the user explicitly asks to log it.

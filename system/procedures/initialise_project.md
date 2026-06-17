@@ -38,7 +38,7 @@ Project memory initialization is the only default exception to the knowledge-bas
 During this procedure, allowed target-project edits are limited to:
 
 - `AGENTS.md`, only to create it or add/update the marked Knowledge Tracker memory block
-- `CLAUDE.md`, only to preserve any unique regular-file instructions and make it a relative symlink to `AGENTS.md`
+- `CLAUDE.md`, only to preserve any unique Claude-specific instructions and make it a regular file importing `AGENTS.md`
 - `memory/index.md`
 - `memory/devices.md`
 - `memory/runs.md`
@@ -71,13 +71,13 @@ Confirm the target project path exists before editing.
 Inspect the target project path and identify:
 
 - Whether `AGENTS.md` exists
-- Whether `CLAUDE.md` exists, and whether it is already a relative symlink to `AGENTS.md`
+- Whether `CLAUDE.md` exists, and whether it is already a regular file whose first non-empty line is exactly `@AGENTS.md`
 - Whether `README.md` exists
 - Whether a `memory/` folder already exists
 - Whether existing notes, docs, experiment logs, or run logs already exist
 - Whether the path is a Git repository, and if so the current branch, latest commit, and relevant uncommitted status
 
-Read existing project instructions before editing `AGENTS.md`. If `CLAUDE.md` is a regular file, read it too and preserve any unique Claude-only instructions before replacing it with a symlink.
+Read existing project instructions before editing `AGENTS.md`. If `CLAUDE.md` exists, inspect it too and preserve any unique Claude-only instructions before replacing or rewriting it as an import stub.
 
 If existing instructions conflict with the memory block or the preservation/merge is ambiguous, stop and ask the user.
 
@@ -178,63 +178,44 @@ The inserted block must instruct agents to:
 - Avoid pasting giant logs; summarize and link to paths.
 - Prefer compact durable learning over exhaustive raw dumping.
 
-## Step 4: Ensure `CLAUDE.md` Is A Relative Symlink
+## Step 4: Ensure `CLAUDE.md` Imports `AGENTS.md`
 
 After `AGENTS.md` is correct, ensure Claude uses the same instructions:
 
-```text
-CLAUDE.md -> AGENTS.md
+```md
+@AGENTS.md
 ```
 
 Rules:
 
-- If `CLAUDE.md` does not exist, create a relative symlink named `CLAUDE.md` whose target text is exactly `AGENTS.md`.
-- The command may use an absolute link path, but the symlink target must stay relative:
+- `CLAUDE.md` must be a regular file, not a symlink.
+- Its first non-empty line must be exactly:
 
-```sh
-ln -s AGENTS.md "$PROJECT_PATH/CLAUDE.md"
-```
+  ```md
+  @AGENTS.md
+  ```
 
+- If `CLAUDE.md` does not exist, create it with only that import line.
 - Verify with:
 
 ```sh
-readlink "$PROJECT_PATH/CLAUDE.md"
+test -f "$PROJECT_PATH/CLAUDE.md" && sed -n '1,5p' "$PROJECT_PATH/CLAUDE.md"
 ```
 
-The output must be exactly:
+- The first non-empty output line must be exactly:
 
-```text
-AGENTS.md
+```md
+@AGENTS.md
 ```
 
-- Do not use `ln -s "$PROJECT_PATH/AGENTS.md" "$PROJECT_PATH/CLAUDE.md"` because that creates an absolute symlink target.
-- If `CLAUDE.md` already points to `AGENTS.md`, leave it as-is unless it is absolute; prefer converting absolute links to relative links after confirming the target is the adjacent `AGENTS.md`.
+- If `CLAUDE.md` is a symlink to `AGENTS.md`, replace the symlink with the regular import file.
 - If `CLAUDE.md` is a regular file, preserve its unique instructions first:
-  - If the content is clearly complementary, append it to `AGENTS.md` under an appropriate existing or new heading.
+  - If the content is already only `@AGENTS.md` plus optional Claude-specific guidance, leave it as-is.
+  - If the content is clearly complementary, keep it below the `@AGENTS.md` import under an appropriate existing or new heading.
   - If the content conflicts with `AGENTS.md` or the merge is ambiguous, stop and ask the user.
-  - Only after preservation, replace `CLAUDE.md` with the relative symlink.
-- Do not keep separate duplicated `AGENTS.md` and `CLAUDE.md` instruction files.
-
-### Windows Fallback When Symlinks Are Not Permitted
-
-On Windows hosts without Administrator privileges or Developer Mode enabled, all symlink-creating commands fail:
-
-- `ln -s AGENTS.md CLAUDE.md` in Git Bash silently copies the file instead of linking, or fails with `Operation not permitted`.
-- `mklink CLAUDE.md AGENTS.md` from cmd reports `You do not have sufficient privilege to perform this operation.`
-- `New-Item -ItemType SymbolicLink -Path CLAUDE.md -Target AGENTS.md` reports `Administrator privilege required for this operation.`
-
-When all three fail, do not insist on a symlink. Use this fallback:
-
-- Replace `CLAUDE.md` with a regular file containing only this single line:
-
-  ```text
-  Read AGENTS.md in this directory for all project instructions.
-  ```
-
+  - Only after preservation, rewrite `CLAUDE.md` as a regular file with `@AGENTS.md` first and preserved Claude-only guidance below it.
 - Do not duplicate the full `AGENTS.md` content into `CLAUDE.md`; the duplicate will drift.
-- Do not leave `CLAUDE.md` containing only the literal text `AGENTS.md`; that is not a usable instruction to Claude, which reads `CLAUDE.md` verbatim as project guidance.
-- Record in the daily log that the symlink was skipped because the host lacked Developer Mode and that `CLAUDE.md` is the documented pointer stub.
-- The user can later enable Windows Developer Mode (Settings → Privacy & security → For developers) and re-run `/check-initialisation` to convert the pointer stub into a real symlink.
+- Do not leave `CLAUDE.md` containing only the literal text `AGENTS.md`; Claude Code imports files with `@AGENTS.md`.
 
 ## Step 5: Register The Workstream In The Knowledge Base
 
@@ -291,7 +272,7 @@ Include:
 - Project path
 - Workstream slug
 - Whether project `AGENTS.md` was created, appended, or updated
-- Whether `CLAUDE.md` was created as a relative symlink, already correct, or converted after preserving content
+- Whether `CLAUDE.md` was created as an import stub, already correct, or converted after preserving Claude-only content
 - Whether new memory files were created
 - Which project note naming convention was used: legacy `YYYY-MM-DD.md` or node-specific `YYYY-MM-DD-<node>.md`
 - Whether project memory command specs under `memory/commands/` were created or aligned
@@ -311,7 +292,7 @@ Before finishing, verify:
 - Project command specs exist for `/remember`, `/log`, `/run`, `/decision`, `/learned`, `/status`, `/scratch`, `/organise-scratch`, and `/check-initialisation`.
 - Today's note exists.
 - Project `AGENTS.md` contains exactly one Knowledge Tracker memory block.
-- Project `CLAUDE.md` is a relative symlink to `AGENTS.md`, verified by `readlink "$PROJECT_PATH/CLAUDE.md"` returning exactly `AGENTS.md`. On Windows hosts without admin/Developer Mode, the documented pointer-stub fallback (single line: `Read AGENTS.md in this directory for all project instructions.`) is acceptable.
+- Project `CLAUDE.md` is a regular file whose first non-empty line is exactly `@AGENTS.md`.
 - Existing project instructions were preserved.
 - No target-project files were staged, committed, or pushed.
 - `wiki/workstreams/index.md` links to the workstream.

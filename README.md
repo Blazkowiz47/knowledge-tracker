@@ -6,12 +6,69 @@ It is intentionally empty: clone it, rename it if you want, and let your own pro
 
 ## Quick Start
 
-1. Open this repository as an Obsidian vault, or edit the Markdown files directly.
-2. Set your device name with `KB_NODE_NAME`, for example `laptop` or `workstation-01`, if you want device-aware summaries.
-3. Start from `wiki/index.md` and `wiki/today.md`.
-4. Add active projects by following `system/procedures/initialise_project.md`.
-5. Let project repositories keep detailed operational memory in their own `memory/` folders.
-6. Use this knowledge base for synthesis: workstream summaries, daily logs, planning, decisions, and cross-project learning.
+1. Fork this repository or clone it into a new private repository.
+2. Open the repository as an Obsidian vault, or edit the Markdown files directly.
+3. Set your device name with `KB_NODE_NAME`, for example `laptop` or `workstation-01`, if you want device-aware summaries.
+4. Start from `wiki/index.md` and `wiki/today.md`.
+5. Add active projects by following `system/procedures/initialise_project.md`.
+6. Let project repositories keep detailed operational memory in their own `memory/` folders.
+7. Use this knowledge base for synthesis: workstream summaries, daily logs, planning, decisions, and cross-project learning.
+
+## Use This Template
+
+This scaffold is meant to become your own private knowledge base. The template itself should stay reusable and empty; your fork or clone is where personal logs, project paths, workstreams, and decisions should live.
+
+### Option A: Fork On GitHub
+
+1. Fork the repository.
+2. Make your fork private if you plan to store personal or company context.
+3. Clone your fork:
+
+   ```sh
+   git clone git@github.com:<you>/<your-knowledge-base>.git
+   cd <your-knowledge-base>
+   ```
+
+4. Optional: rename the repository to something personal, such as `knowledge-base`, `research-memory`, or `work-brain`.
+5. Open the folder in Obsidian, Codex, Claude Code, or your editor.
+
+### Option B: Clone Without Forking
+
+```sh
+git clone git@github.com:<source-org>/knowledge-tracker.git my-knowledge-base
+cd my-knowledge-base
+git remote remove origin
+git remote add origin git@github.com:<you>/<private-repo>.git
+git push -u origin main
+```
+
+Use this when you want a clean private repository that starts from the template without retaining a fork relationship.
+
+### First Personalization Pass
+
+1. Replace placeholder wording in `wiki/index.md` and `wiki/today.md`.
+2. Keep `AGENTS.md` as the canonical instruction file for agents.
+3. Keep `CLAUDE.md` as a tiny Claude Code import file:
+
+   ```md
+   @AGENTS.md
+   ```
+
+   Add Claude-specific notes below that line only if you need them.
+
+4. Set a stable device name before writing device-aware notes:
+
+   ```sh
+   export KB_NODE_NAME=work-laptop
+   ```
+
+5. Commit your first personalized version:
+
+   ```sh
+   git add .
+   git commit -m "Initialize personal knowledge tracker"
+   git push
+   ```
 
 ## Agent Workflow
 
