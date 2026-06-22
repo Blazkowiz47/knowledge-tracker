@@ -80,6 +80,8 @@ Do not invent a different project memory structure unless the user explicitly as
 - Do not remove, rewrite, reorder, or weaken existing project-specific instructions.
 - Generate or maintain `memory/scratch/index.md` so project-local agents have a clear place for uncertain project-only captures and in-flight working notes.
 - Scratch-only project work should stay in `memory/scratch/`; agents should not create or update a project daily note unless the scratch result is promoted, a run/decision/learning/status changes, or the user explicitly asks to log it.
+- Generate or maintain `memory/integrations/index.md` so project-local agents have a device-portable place for optional external connections.
+- Treat integrations as optional. Missing tools, missing authentication, or unavailable network access must never block local project memory updates; draft or skip external publishing according to the integration policy.
 - Generate or maintain project memory command specs under `memory/commands/` so project-local agents can use shortcuts such as `/remember`, `/log`, `/run`, `/decision`, `/learned`, `/status`, `/scratch`, `/organise-scratch`, and `/check-initialisation`.
 - Prefer project daily notes named `memory/notes/YYYY-MM-DD-<node>.md` for new work, where `<node>` is a stable lowercase device/server slug.
 - If the stable `<node>` name is not known, ask the user for it before creating or writing a new node-specific project note; do not invent generic names such as `server`, `gpu`, `desktop`, or `default`.

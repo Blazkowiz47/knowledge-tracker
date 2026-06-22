@@ -17,6 +17,7 @@ Optional:
 - Tags
 - Workstream slug
 - Node context, meaning the stable device or server name used for memory notes
+- Initial contents, context, directions, or seed notes to place into project memory and the workstream
 
 If the node context is needed for a new project note and cannot be inferred safely from the user request or existing project memory, ask the user for the stable `<node>` name before creating or writing that note.
 
@@ -46,6 +47,7 @@ During this procedure, allowed target-project edits are limited to:
 - `memory/decisions.md`
 - `memory/notes/YYYY-MM-DD.md` or `memory/notes/YYYY-MM-DD-<node>.md`
 - `memory/scratch/index.md`
+- `memory/integrations/index.md` and existing enabled integration files/folders under `memory/integrations/`
 - `memory/commands/` project memory command specs
 
 Allowed knowledge-base edits are limited to:
@@ -107,9 +109,24 @@ memory/
     YYYY-MM-DD-<node>.md
   scratch/
     index.md
+  integrations/
+    index.md
 ```
 
 `memory/scratch/` is the project-local holding area for uncertain project-only captures and multi-day, in-flight working notes. Keep `memory/scratch/index.md` as the short routing guide. Use one topic per scratch file, for example `memory/scratch/dataset-consistency.md`. Durable findings inside a scratch file are promoted to `memory/learnings.md`, `memory/decisions.md`, `memory/runs.md`, `memory/index.md`, or a dated note; the scratch file itself is deleted or marked closed when the investigation closes.
+
+`memory/integrations/` is the project-local home for optional external connections. Always create `memory/integrations/index.md` from `system/templates/project-integrations-index.md`. Do not enable provider-specific integrations by default. When a provider is already enabled or the user asks to add it, preserve and align its files. For Jira via `acli`, use:
+
+```text
+memory/integrations/
+  jira.md
+  jira/
+    issues/
+      ISSUE-KEY.md
+    drafts/
+```
+
+Use `system/templates/project-integration-jira.md` for `jira.md` and `system/templates/project-integration-jira-issue.md` for new issue files. Empty `issues/` and `drafts/` directories may be created when Jira is enabled, but missing local `acli` access must not block initialization or memory updates.
 
 Use a node-specific note for new project memory:
 
@@ -132,6 +149,16 @@ Use the templates in `system/templates/` for new files.
 Use `system/templates/project-commands/` for new `memory/commands/` files.
 
 Do not overwrite existing memory files. If a file exists, update it only when the update is necessary and consistent with its current content.
+
+If the user provides initial contents, context, or directions, seed them compactly into allowed memory surfaces only:
+
+- Put stable project overview, status, blockers, and next actions into `memory/index.md`.
+- Put dated setup context into today's project note.
+- Put uncertain or in-flight directions into `memory/scratch/`.
+- Put durable lessons, decisions, or runs into their matching structured memory files only when the user clearly provides that kind of content.
+- Summarize the same seed context in the KB workstream pages when it helps future recovery.
+
+If no initial contents are provided, create the scaffold empty from templates.
 
 Keep project memory compact and chronological. Summarize durable lessons and link to output paths rather than pasting large logs, tables, or raw experiment output.
 
@@ -174,6 +201,8 @@ The inserted block must instruct agents to:
 - Keep `memory/index.md` as the fast project overview.
 - Use `memory/scratch/` for uncertain project-only captures and in-flight notes that are not ready for the structured memory files.
 - Treat scratch-only work as scratch-only: do not create or update today's project note unless the scratch result is promoted, a run/decision/learning/status changes, or the user explicitly asks to log it.
+- Use `memory/integrations/` for optional external connections and read `memory/integrations/index.md` before logging project work when it exists.
+- Treat external integrations as visibility surfaces, not the canonical memory. Missing tools or authentication must never block local memory updates; save drafts locally and mark external publishing as skipped on the current node.
 - Use `memory/commands/` slash command specs when the user starts a prompt with a project memory command.
 - Avoid pasting giant logs; summarize and link to paths.
 - Prefer compact durable learning over exhaustive raw dumping.
@@ -277,6 +306,7 @@ Include:
 - Which project note naming convention was used: legacy `YYYY-MM-DD.md` or node-specific `YYYY-MM-DD-<node>.md`
 - Whether project memory command specs under `memory/commands/` were created or aligned
 - Whether project `memory/scratch/index.md` was created or aligned
+- Whether project `memory/integrations/index.md` was created or aligned
 - That the target project repository was not staged, committed, or pushed
 
 ## Step 7: Verify And Sync
@@ -288,6 +318,7 @@ Before finishing, verify:
 - `memory/index.md` exists.
 - `memory/notes/` exists.
 - `memory/scratch/index.md` exists.
+- `memory/integrations/index.md` exists.
 - `memory/commands/index.md` exists and links the project memory commands.
 - Project command specs exist for `/remember`, `/log`, `/run`, `/decision`, `/learned`, `/status`, `/scratch`, `/organise-scratch`, and `/check-initialisation`.
 - Today's note exists.

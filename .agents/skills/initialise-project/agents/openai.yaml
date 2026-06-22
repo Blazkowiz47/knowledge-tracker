@@ -1,0 +1,4 @@
+interface:
+  display_name: "Initialise Project"
+  short_description: "Initialize project memory from the KB."
+  default_prompt: "Use $initialise-project to initialize project memory for a project path."

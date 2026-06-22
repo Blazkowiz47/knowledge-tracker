@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jira ACLI"
+  short_description: "Use optional Jira via acli integration."
+  default_prompt: "Use $jira-acli to draft or publish Jira updates from project memory."

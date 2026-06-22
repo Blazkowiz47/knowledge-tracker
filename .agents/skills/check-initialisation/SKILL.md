@@ -23,6 +23,13 @@ Use this skill as a thin Codex adapter for the knowledge-base `/check-initialisa
 - Preserve existing Claude-only guidance below the import when it is clearly complementary.
 - If a previous `CLAUDE.md -> AGENTS.md` symlink is found, replace it with the import stub during alignment.
 
+## Integration Check
+
+- Ensure `memory/integrations/index.md` exists for initialized projects.
+- Treat provider-specific integrations as optional and device-dependent.
+- If a provider file such as `memory/integrations/jira.md` exists, align only its local folders, templates, issue ledgers, and draft locations.
+- Do not require `acli` or any external tool during initialization checks; missing tools or auth should be handled by the provider-specific skill at use time.
+
 ## Boundaries
 
 - From the knowledge-base repo, modify only the target project's memory infrastructure allowed by the command spec.

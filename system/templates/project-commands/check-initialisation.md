@@ -12,13 +12,15 @@ Verify and align this project's memory structure.
    - `memory/decisions.md`
    - `memory/notes/`
    - `memory/scratch/index.md`
+   - `memory/integrations/index.md`
    - `memory/commands/`
 2. Confirm `AGENTS.md` contains exactly one Knowledge Tracker memory block.
 3. Confirm `CLAUDE.md` is a regular file whose first non-empty line is exactly `@AGENTS.md`, unless the user explicitly asked to skip it.
 4. Confirm project command specs exist for `/remember`, `/log`, `/run`, `/decision`, `/learned`, `/status`, `/scratch`, `/organise-scratch`, and `/check-initialisation`.
-5. Align missing memory infrastructure when it is safe to do so, preserving all existing project instructions and memory content.
-6. If existing instructions conflict or preservation is ambiguous, stop and ask the user.
-7. Do not stage, commit, or push unless the user explicitly asks from this project repository.
+5. If provider-specific integration files exist, align their local folders and drafts/ledgers without requiring external tools or authentication.
+6. Align missing memory infrastructure when it is safe to do so, preserving all existing project instructions and memory content.
+7. If existing instructions conflict or preservation is ambiguous, stop and ask the user.
+8. Do not stage, commit, or push unless the user explicitly asks from this project repository.
 
 ## Report
 

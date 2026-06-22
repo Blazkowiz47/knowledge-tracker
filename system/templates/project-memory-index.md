@@ -40,6 +40,10 @@ Next action:
 
 - See `scratch/index.md` for unresolved project-local captures and in-flight notes.
 
+## Integrations
+
+- See `integrations/index.md` for optional external connections and publishing policies.
+
 ## Links
 
 - 
