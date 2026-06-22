@@ -1,4 +1,4 @@
 interface:
   display_name: "Sync"
-  short_description: "Pull, ingest, commit, and push KB changes."
-  default_prompt: "Use $sync to pull the knowledge base, ingest project memories, and push KB changes."
+  short_description: "Pull, ingest changed notes, and push KB changes."
+  default_prompt: "Use $sync to pull the knowledge base, ingest missing or changed registered project memories, and push KB changes."

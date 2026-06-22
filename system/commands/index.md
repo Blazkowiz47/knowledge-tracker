@@ -15,10 +15,10 @@ Command specs do not replace repository instructions. If there is a conflict, fo
 | `/summarise-day` | `summarise-day.md` | Finalize or refresh a daily summary. |
 | `/summarise-month` | `summarise-month.md` | Create or refresh a monthly summary. |
 | `/summarise-year` | `summarise-year.md` | Create or refresh a yearly summary. |
-| `/ingest` | `ingest.md` | Ingest project memory notes into the knowledge base. |
+| `/ingest` | `ingest.md` | Ingest missing, changed, or date-scoped project memory notes into the knowledge base. |
 | `/auto-ingest` | `auto-ingest.md` | Detect changed project memory notes and ingest them safely with deferred fallback. |
 | `/plan-tomorrow` | `plan-tomorrow.md` | Produce or write the next-day plan from synced memory. |
-| `/sync` | `sync.md` | Pull the knowledge base, ingest project memories, then commit and push knowledge-base changes only. |
+| `/sync` | `sync.md` | Pull the knowledge base, ingest missing or changed registered project memories, then commit and push knowledge-base changes only. |
 | `/organise-scratch` | `organise-scratch.md` | Sweep `wiki/scratch/` and route each captured note to its proper home. |
 | `/check-initialisation` | `check-initialisation.md` | Verify and align a project's memory initialization. |
 

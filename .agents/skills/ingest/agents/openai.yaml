@@ -1,4 +1,4 @@
 interface:
   display_name: "Ingest"
-  short_description: "Ingest project memory into the KB."
-  default_prompt: "Use $ingest to ingest project memory notes into the knowledge base."
+  short_description: "Ingest changed project notes into the KB."
+  default_prompt: "Use $ingest to scan registered project memories and ingest missing or changed notes into the knowledge base."

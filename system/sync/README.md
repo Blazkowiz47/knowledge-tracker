@@ -35,3 +35,7 @@ Use `system/procedures/device_aware_summaries.md` for source selection and lazy 
 ## Pending Ingestion
 
 Use `pending-ingestions.yaml` only when automation detects work that cannot be safely summarized yet. See `pending-ingestions.example.yaml`.
+
+## Ingestion Ledger
+
+Use `ingestion-ledger.yaml` to record project source notes that were successfully synthesized into the knowledge base. `/sync` and default `/ingest` runs compare registered project `memory/notes/*.md` files against this ledger so older missing notes and changed notes are not skipped merely because their work date is not today.

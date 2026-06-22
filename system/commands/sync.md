@@ -1,13 +1,13 @@
 # Command: /sync
 
-Refresh the knowledge base, ingest project memories, then commit and push knowledge-base changes only.
+Refresh the knowledge base, ingest missing or changed registered project memories, then commit and push knowledge-base changes only.
 
 ## Steps
 
 1. Follow `system/procedures/maintain_daily_log.md`.
 2. Run `git fetch` in the knowledge-base repository to refresh upstream state.
 3. Run `git pull --ff-only` in the knowledge-base repository before ingestion or new edits.
-4. Follow `system/procedures/ingest_project_day.md` to ingest project memory notes from all known projects listed in `wiki/workstreams/index.md`, unless the user named a subset.
+4. Follow `system/procedures/ingest_project_day.md` in changed-source mode: scan all reachable registered project paths from `wiki/workstreams/index.md`, compare project `memory/notes/*.md` sources with `system/sync/ingestion-ledger.yaml`, and ingest every missing or changed source unless the user named a subset.
 5. If summarisation cannot be completed safely, follow `system/procedures/automated_project_ingest.md` instead of writing a low-confidence summary.
 6. Keep project repositories read-only while ingesting; do not pull, stage, commit, or push external project repositories unless the user explicitly overrides that boundary.
 7. Run `git status --short --branch` in the knowledge-base repository.

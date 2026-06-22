@@ -81,7 +81,7 @@ When using an agent:
 3. Work inside individual repositories as usual.
 4. Let project-level agents maintain date-wise project memory in `memory/notes/`.
 5. Optionally connect project memory to external systems through `memory/integrations/`, keeping local memory canonical and using drafts when tools are unavailable.
-6. Return here at the end of the day and use `/sync` to pull the knowledge base, ingest project memories, and push the updated knowledge base before planning tomorrow.
+6. Return here at the end of the day and use `/sync` to pull the knowledge base, ingest missing or changed project memories, and push the updated knowledge base before planning tomorrow.
 
 The main instructions live in `AGENTS.md`.
 
@@ -97,7 +97,7 @@ Repo-local Codex skill adapters live in `.agents/skills/`. They expose the same 
 - `system/commands/index.md` - portable slash-command specs
 - `system/templates/project-integrations-index.md` - optional project integration scaffold, including Jira and Confluence patterns
 - `system/procedures/initialise_project.md` - how agents initialize memory inside a project
-- `system/procedures/ingest_project_day.md` - how agents ingest project daily notes
+- `system/procedures/ingest_project_day.md` - how agents ingest missing, changed, or date-scoped project notes
 - `system/procedures/plan_tomorrow.md` - how agents plan the next day
 
 ## Privacy Model

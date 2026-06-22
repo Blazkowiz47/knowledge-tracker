@@ -50,6 +50,8 @@ When the user asks to ingest today's work from project memories, follow:
 
 - `system/procedures/ingest_project_day.md`
 
+When the user asks to sync, ingest all registered project memories, or ingest changed project memories, use the same procedure in changed-source mode: scan registered project memory notes, compare them with `system/sync/ingestion-ledger.yaml`, and ingest missing or changed sources rather than only today's note.
+
 When ingestion is automated, scheduled, retried, or must handle model/rate/quota/weekly-limit fallback, follow:
 
 - `system/procedures/automated_project_ingest.md`
