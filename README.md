@@ -81,7 +81,7 @@ When using an agent:
 3. Work inside individual repositories as usual.
 4. Let project-level agents maintain date-wise project memory in `memory/notes/`.
 5. Optionally connect project memory to external systems through `memory/integrations/`, keeping local memory canonical and using drafts when tools are unavailable.
-6. Return here at the end of the day to ingest project memories and plan tomorrow.
+6. Return here at the end of the day and use `/sync` to pull the knowledge base, ingest project memories, and push the updated knowledge base before planning tomorrow.
 
 The main instructions live in `AGENTS.md`.
 

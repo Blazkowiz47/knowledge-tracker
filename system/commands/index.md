@@ -18,7 +18,7 @@ Command specs do not replace repository instructions. If there is a conflict, fo
 | `/ingest` | `ingest.md` | Ingest project memory notes into the knowledge base. |
 | `/auto-ingest` | `auto-ingest.md` | Detect changed project memory notes and ingest them safely with deferred fallback. |
 | `/plan-tomorrow` | `plan-tomorrow.md` | Produce or write the next-day plan from synced memory. |
-| `/sync` | `sync.md` | Commit and push knowledge-base changes only. |
+| `/sync` | `sync.md` | Pull the knowledge base, ingest project memories, then commit and push knowledge-base changes only. |
 | `/organise-scratch` | `organise-scratch.md` | Sweep `wiki/scratch/` and route each captured note to its proper home. |
 | `/check-initialisation` | `check-initialisation.md` | Verify and align a project's memory initialization. |
 
