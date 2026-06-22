@@ -1,0 +1,4 @@
+interface:
+  display_name: "Check Initialisation"
+  short_description: "Verify and align project memory setup."
+  default_prompt: "Use $check-initialisation to verify and align a project's Knowledge Tracker memory initialization."

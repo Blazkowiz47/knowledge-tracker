@@ -1,0 +1,4 @@
+interface:
+  display_name: "Summarise Day"
+  short_description: "Finalize or refresh a daily summary."
+  default_prompt: "Use $summarise-day to finalize or refresh a knowledge-base daily summary."

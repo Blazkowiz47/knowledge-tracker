@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sync"
+  short_description: "Commit and push KB changes only."
+  default_prompt: "Use $sync to commit and push knowledge-base changes only."

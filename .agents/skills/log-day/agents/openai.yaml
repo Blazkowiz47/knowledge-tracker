@@ -1,0 +1,4 @@
+interface:
+  display_name: "Log Day"
+  short_description: "Append a compact KB daily log entry."
+  default_prompt: "Use $log-day to append a compact entry to today's knowledge-base daily log."

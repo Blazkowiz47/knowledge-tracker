@@ -1,0 +1,4 @@
+interface:
+  display_name: "Summarise Month"
+  short_description: "Create or refresh a monthly summary."
+  default_prompt: "Use $summarise-month to create or refresh a knowledge-base monthly summary."
