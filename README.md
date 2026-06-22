@@ -84,12 +84,15 @@ When using an agent:
 
 The main instructions live in `AGENTS.md`.
 
+Repo-local Codex skill adapters live in `.agents/skills/`. They expose the same workflows as the command specs, such as `/log-day`, `/ingest`, `/check-initialisation`, `/summarise`, `/plan-tomorrow`, and `/sync`, while keeping `AGENTS.md` and `system/commands/` as the canonical instructions.
+
 ## Main Entry Points
 
 - `wiki/index.md` - main map
 - `wiki/scratch/README.md` - temporary capture area
 - `wiki/today.md` - current daily planning surface
 - `wiki/workstreams/index.md` - active workstreams and project memories
+- `.agents/skills/` - repo-local Codex skill adapters for the command workflows
 - `system/commands/index.md` - portable slash-command specs
 - `system/procedures/initialise_project.md` - how agents initialize memory inside a project
 - `system/procedures/ingest_project_day.md` - how agents ingest project daily notes

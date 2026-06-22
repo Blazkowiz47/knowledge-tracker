@@ -9,7 +9,7 @@ Use this skill as a thin Codex adapter for the knowledge-base `/summarise` comma
 
 ## Workflow
 
-1. Read and follow this repository q{'}s `AGENTS.md`.
+1. Read and follow this repository's `AGENTS.md`.
 2. Read and follow `system/commands/summarise.md`.
 3. Dispatch to `system/commands/summarise-day.md`, `system/commands/summarise-month.md`, or `system/commands/summarise-year.md` as directed by the command spec.
 4. Follow any procedures referenced by those commands.

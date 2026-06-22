@@ -9,7 +9,7 @@ Use this skill as a thin Codex adapter for the knowledge-base `/log-day` command
 
 ## Workflow
 
-1. Read and follow this repository q{'}s `AGENTS.md`.
+1. Read and follow this repository's `AGENTS.md`.
 2. Read and follow `system/commands/log-day.md`.
 3. Follow any procedures referenced by that command.
 4. Treat the command spec as the canonical workflow. This skill should not duplicate or override it.
