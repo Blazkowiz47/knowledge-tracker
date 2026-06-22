@@ -95,7 +95,7 @@ Repo-local Codex skill adapters live in `.agents/skills/`. They expose the same 
 - `wiki/workstreams/index.md` - active workstreams and project memories
 - `.agents/skills/` - repo-local Codex skill adapters for the command workflows
 - `system/commands/index.md` - portable slash-command specs
-- `system/templates/project-integrations-index.md` - optional project integration scaffold
+- `system/templates/project-integrations-index.md` - optional project integration scaffold, including Jira and Confluence patterns
 - `system/procedures/initialise_project.md` - how agents initialize memory inside a project
 - `system/procedures/ingest_project_day.md` - how agents ingest project daily notes
 - `system/procedures/plan_tomorrow.md` - how agents plan the next day

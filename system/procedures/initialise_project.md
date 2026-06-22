@@ -128,6 +128,21 @@ memory/integrations/
 
 Use `system/templates/project-integration-jira.md` for `jira.md` and `system/templates/project-integration-jira-issue.md` for new issue files. Empty `issues/` and `drafts/` directories may be created when Jira is enabled, but missing local `acli` access must not block initialization or memory updates.
 
+For Confluence via `acli`, use:
+
+```text
+memory/integrations/
+  confluence.md
+  confluence/
+    pages/
+      PAGE-ID.md
+    blogs/
+      BLOG-ID-OR-SLUG.md
+    drafts/
+```
+
+Use `system/templates/project-integration-confluence.md` for `confluence.md`, `system/templates/project-integration-confluence-page.md` for new page files, and `system/templates/project-integration-confluence-blog.md` for new blog files. Empty `pages/`, `blogs/`, and `drafts/` directories may be created when Confluence is enabled, but missing local `acli` access or unsupported Confluence commands must not block initialization or memory updates.
+
 Use a node-specific note for new project memory:
 
 ```text

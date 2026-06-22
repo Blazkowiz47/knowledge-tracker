@@ -1,0 +1,4 @@
+interface:
+  display_name: "Confluence ACLI"
+  short_description: "Use optional Confluence via acli integration."
+  default_prompt: "Use $confluence-acli to draft or publish Confluence updates from project memory."
