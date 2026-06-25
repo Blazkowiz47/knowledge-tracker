@@ -18,7 +18,9 @@ Command specs do not replace repository instructions. If there is a conflict, fo
 | `/ingest` | `ingest.md` | Ingest missing, changed, or date-scoped project memory notes into the knowledge base. |
 | `/auto-ingest` | `auto-ingest.md` | Detect changed project memory notes and ingest them safely with deferred fallback. |
 | `/plan-tomorrow` | `plan-tomorrow.md` | Produce or write the next-day plan from synced memory. |
-| `/sync` | `sync.md` | Pull the knowledge base, ingest missing or changed registered project memories, then commit and push knowledge-base changes only. |
+| `/device-sync` | `device-sync.md` | Pull the knowledge base, publish this node's changed project-memory sources into per-node KB staging, then commit and push those node-owned files only. |
+| `/aggregate-sync` | `aggregate-sync.md` | Pull the knowledge base, merge device-staged sources into global KB synthesis, then commit and push coordinator-owned files. |
+| `/sync` | `sync.md` | Primary/coordinator sync: pull the knowledge base, ingest missing or changed registered project memories into global KB state, then commit and push knowledge-base changes only. |
 | `/organise-scratch` | `organise-scratch.md` | Sweep `wiki/scratch/` and route each captured note to its proper home. |
 | `/check-initialisation` | `check-initialisation.md` | Verify and align a project's memory initialization. |
 
@@ -27,6 +29,7 @@ Command specs do not replace repository instructions. If there is a conflict, fo
 - Run `system/procedures/maintain_daily_log.md` before writing any knowledge-base log entry.
 - Keep external project repositories read-only except for the explicit project-memory initialization/check exception.
 - Never stage, commit, or push external project repositories from a knowledge-base session.
+- On non-primary devices, prefer `/device-sync` so automated runs write only node-owned staging files. Use `/aggregate-sync` or `/sync` only from the chosen coordinator unless the user explicitly overrides the multi-device conflict policy.
 - Treat project-local notes as authoritative and knowledge-base summaries as refreshable derived state.
 - If summarisation fails due to model, rate, quota, weekly-limit, or network limits, defer ingestion instead of fabricating a summary.
 - Commit and push knowledge-base edits after command execution, following the root `AGENTS.md` sync directive.

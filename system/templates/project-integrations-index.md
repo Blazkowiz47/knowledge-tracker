@@ -25,7 +25,7 @@ Local project memory remains canonical. Missing tools, missing authentication, o
 
 When adding an integration, record:
 
-- Provider and adapter, for example Jira or Confluence via `acli`
+- Provider and adapter, for example Jira or Confluence via `atlassian-rovo-mcp`
 - Enabled capabilities, for example `create-ticket` or `add-comment`
 - Linked external objects, for example issues, epics, pages, channels, or documents
 - Publish policy, including whether updates are draft-first or auto-published

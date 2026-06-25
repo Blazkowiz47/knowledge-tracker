@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aggregate Sync"
+  short_description: "Merge per-device KB staging into global knowledge-base synthesis."
+  default_prompt: "Use $aggregate-sync on the primary/coordinator machine to pull device-staged sync outputs, merge new sources into global KB synthesis, and push the result."

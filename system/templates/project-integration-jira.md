@@ -2,23 +2,33 @@
 
 Status: disabled
 Provider: jira
-Adapter: acli
+Adapter: atlassian-rovo-mcp
 Capabilities:
 - create-ticket
 - add-comment
 Default publish policy: draft-first
-Fallback: draft locally when `acli` is missing, unauthenticated, or unavailable on this node.
+Fallback: draft locally when Atlassian Rovo MCP is missing, unauthenticated, or unavailable on this node.
 
 ## Availability
 
-Required local checks before external actions:
+Required MCP setup/authentication before external actions:
+
+Codex:
 
 ```sh
-which acli
-acli auth status
+codex mcp get atlassian || codex mcp add atlassian --url https://mcp.atlassian.com/v1/mcp/authv2
+codex mcp login atlassian
 ```
 
-If either check fails, do not block project memory work. Save the intended ticket/comment under `memory/integrations/jira/drafts/` and mark the publish status as skipped for the current node.
+Claude Code:
+
+```sh
+claude mcp add --transport http atlassian https://mcp.atlassian.com/v1/mcp/authv2
+```
+
+Then run `/mcp` in Claude Code to authenticate if needed.
+
+If MCP setup/auth fails or the current harness does not expose the needed Jira tools, do not block project memory work. Save the intended ticket/comment under `memory/integrations/jira/drafts/` and mark the publish status as skipped for the current node.
 
 ## Linked Issues
 
@@ -40,6 +50,7 @@ None
 
 ## Directives
 
+- Use `$jira-rovo-mcp` as the agent adapter for Jira actions.
 - Use `memory/integrations/jira/issues/<KEY>.md` for per-issue local mapping and publish ledgers.
 - Use `memory/integrations/jira/drafts/` for comments or tickets that could not be posted from the current node.
 - When a new Jira issue becomes relevant, add it to `Linked Issues` and create a matching issue file.

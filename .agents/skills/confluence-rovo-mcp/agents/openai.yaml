@@ -1,0 +1,11 @@
+interface:
+  display_name: "Confluence Rovo MCP"
+  short_description: "Use Confluence through Atlassian Rovo MCP."
+  default_prompt: "Use $confluence-rovo-mcp to draft or publish Confluence updates from project memory through Atlassian Rovo MCP."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "atlassian"
+      description: "Atlassian Rovo remote MCP server with Confluence tools"
+      transport: "streamable_http"
+      url: "https://mcp.atlassian.com/v1/mcp/authv2"

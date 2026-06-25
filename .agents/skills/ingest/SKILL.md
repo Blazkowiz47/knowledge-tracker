@@ -17,7 +17,8 @@ Use this skill as a thin Codex adapter for the knowledge-base `/ingest` command.
 ## Boundaries
 
 - Keep project repositories read-only while ingesting.
-- By default, scan registered project paths and ingest missing or changed source notes according to `system/sync/ingestion-ledger.yaml`.
+- By default, scan registered project paths and ingest missing or changed source notes into global KB synthesis according to `system/sync/ingestion-ledger.yaml`.
+- For non-primary multi-device publishing, use `$device-sync` instead so the run writes only node-owned staging files.
 - If the user names a date or project subset, limit ingestion to that requested scope.
 - If summarisation cannot be completed safely, follow the deferred-ingestion fallback rules.
 - Do not stage, commit, or push external project repositories.

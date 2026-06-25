@@ -115,7 +115,7 @@ memory/
 
 `memory/scratch/` is the project-local holding area for uncertain project-only captures and multi-day, in-flight working notes. Keep `memory/scratch/index.md` as the short routing guide. Use one topic per scratch file, for example `memory/scratch/dataset-consistency.md`. Durable findings inside a scratch file are promoted to `memory/learnings.md`, `memory/decisions.md`, `memory/runs.md`, `memory/index.md`, or a dated note; the scratch file itself is deleted or marked closed when the investigation closes.
 
-`memory/integrations/` is the project-local home for optional external connections. Always create `memory/integrations/index.md` from `system/templates/project-integrations-index.md`. Do not enable provider-specific integrations by default. When a provider is already enabled or the user asks to add it, preserve and align its files. For Jira via `acli`, use:
+`memory/integrations/` is the project-local home for optional external connections. Always create `memory/integrations/index.md` from `system/templates/project-integrations-index.md`. Do not enable provider-specific integrations by default. When a provider is already enabled or the user asks to add it, preserve and align its files. For Jira via Atlassian Rovo MCP, use:
 
 ```text
 memory/integrations/
@@ -126,9 +126,9 @@ memory/integrations/
     drafts/
 ```
 
-Use `system/templates/project-integration-jira.md` for `jira.md` and `system/templates/project-integration-jira-issue.md` for new issue files. Empty `issues/` and `drafts/` directories may be created when Jira is enabled, but missing local `acli` access must not block initialization or memory updates.
+Use `system/templates/project-integration-jira.md` for `jira.md` and `system/templates/project-integration-jira-issue.md` for new issue files. Empty `issues/` and `drafts/` directories may be created when Jira is enabled, but missing Atlassian Rovo MCP setup or authentication must not block initialization or memory updates.
 
-For Confluence via `acli`, use:
+For Confluence via Atlassian Rovo MCP, use:
 
 ```text
 memory/integrations/
@@ -141,7 +141,7 @@ memory/integrations/
     drafts/
 ```
 
-Use `system/templates/project-integration-confluence.md` for `confluence.md`, `system/templates/project-integration-confluence-page.md` for new page files, and `system/templates/project-integration-confluence-blog.md` for new blog files. Empty `pages/`, `blogs/`, and `drafts/` directories may be created when Confluence is enabled, but missing local `acli` access or unsupported Confluence commands must not block initialization or memory updates.
+Use `system/templates/project-integration-confluence.md` for `confluence.md`, `system/templates/project-integration-confluence-page.md` for new page files, and `system/templates/project-integration-confluence-blog.md` for new blog files. Empty `pages/`, `blogs/`, and `drafts/` directories may be created when Confluence is enabled, but missing Atlassian Rovo MCP setup, authentication, or exposed Confluence tools must not block initialization or memory updates.
 
 Use a node-specific note for new project memory:
 

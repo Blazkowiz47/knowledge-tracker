@@ -50,7 +50,15 @@ When the user asks to ingest today's work from project memories, follow:
 
 - `system/procedures/ingest_project_day.md`
 
-When the user asks to sync, ingest all registered project memories, or ingest changed project memories, use the same procedure in changed-source mode: scan registered project memory notes, compare them with `system/sync/ingestion-ledger.yaml`, and ingest missing or changed sources rather than only today's note.
+When the user asks to sync, ingest all registered project memories, or ingest changed project memories on the primary/coordinator machine, use the same procedure in changed-source mode: scan registered project memory notes, compare them with `system/sync/ingestion-ledger.yaml`, and ingest missing or changed sources rather than only today's note.
+
+When the user asks for multi-device sync, node-local sync, device sync, or conflict-safe sync from a non-primary device, follow:
+
+- `system/commands/device-sync.md`
+
+When the user asks to merge device sync outputs, aggregate device sync, run the coordinator pass, or perform the one-merger workflow, follow:
+
+- `system/commands/aggregate-sync.md`
 
 When ingestion is automated, scheduled, retried, or must handle model/rate/quota/weekly-limit fallback, follow:
 
@@ -65,6 +73,24 @@ When the user asks to plan tomorrow from synced memories, follow:
 - `system/procedures/plan_tomorrow.md`
 
 Do not invent a different project memory structure unless the user explicitly asks to redesign the system.
+
+## Knowledge-Base Device Sync Model
+
+- Use `KB_NODE_NAME` as the stable lowercase identity for each device or server.
+- Device-local sync publishes per-node KB staging state only. It may write under:
+  - `system/sync/device-ingestions/<node>/`
+  - `system/sync/device-days/<node>/`
+  - `system/sync/device-months/<node>/`
+  - `system/sync/device-years/<node>/`
+- Device-local sync must not update shared/global synthesis surfaces:
+  - `wiki/logs/`
+  - `wiki/workstreams/`
+  - `wiki/today.md`
+  - `system/sync/ingestion-ledger.yaml`
+  - root-level `system/sync/pending-ingestions.yaml`
+- The coordinator/aggregation pass is the only automated workflow that should merge device staging into shared/global KB files.
+- The coordinator records incorporated source hashes in `system/sync/ingestion-ledger.yaml`; device staging files are retained as evidence and skipped by ledger/hash rather than deleted.
+- If more than one device must run global aggregation, stagger the runs and require `git pull --ff-only`; never force-push automation output.
 
 ## Project Memory Initialization Rules
 
@@ -99,6 +125,7 @@ Do not invent a different project memory structure unless the user explicitly as
 - Keep daily summaries in `wiki/logs/YYYY/MM/index.md`; summaries should be brief and concise, but not artificially limited to one line.
 - Keep monthly summaries in `wiki/logs/YYYY/MM/summary.md` and yearly summaries in `wiki/logs/YYYY/summary.md`.
 - Keep device-scoped summaries under `system/sync/device-days/<node>/`, `system/sync/device-months/<node>/`, and `system/sync/device-years/<node>/` when requested. Use `KB_NODE_NAME` as the node identity and ask the user if it is missing.
+- Keep device-local ingestion staging under `system/sync/device-ingestions/<node>/` when running conflict-safe device sync. Do not delete staged device files after aggregation; use global ledger entries to avoid duplicate incorporation.
 - Combined month and year summaries should use existing combined lower-level summaries when available, but must fall back to device summaries rather than forcing combined daily or monthly summaries to be created first.
 - Use `Pending` for the active day, month, or year until rollover or explicit summary.
 - Keep every `index.md` useful as a fast overview.

@@ -12,8 +12,10 @@ Safely detect and ingest project-local memory notes across devices without corru
 - Knowledge-base summaries are derived, disposable, and refreshable.
 - Never mark a source note as ingested unless the knowledge base was actually updated from it.
 - Never replace an existing useful summary with a partial, low-confidence, or failed summary.
-- `system/sync/ingestion-ledger.yaml` tracks source notes that were successfully synthesized.
-- `system/sync/pending-ingestions.yaml` tracks detected sources that still need synthesis or review.
+- `system/sync/ingestion-ledger.yaml` tracks source notes that were successfully synthesized into global KB files.
+- `system/sync/pending-ingestions.yaml` tracks detected sources that still need global synthesis or review.
+- `system/sync/device-ingestions/<node>/ledger.yaml` tracks source notes that one node has published to device staging.
+- `system/sync/device-ingestions/<node>/pending-ingestions.yaml` tracks detected node-local sources that still need device staging.
 
 ## Inputs
 
@@ -25,6 +27,9 @@ Usually:
   - `memory/notes/YYYY-MM-DD-<node>.md`
 - Ingestion ledger:
   - `system/sync/ingestion-ledger.yaml`
+- Device-local ingestion staging:
+  - `system/sync/device-ingestions/<node>/ledger.yaml`
+  - `system/sync/device-ingestions/<node>/pending-ingestions.yaml`
 - Optional pending queue:
   - `system/sync/pending-ingestions.yaml`
 
@@ -42,7 +47,7 @@ Use these states for automated ingestion tracking:
 
 1. Pull or otherwise update the knowledge-base repository before writing.
 2. Pull or otherwise update project repositories only if the user or infrastructure policy allows it; otherwise read the local checkout as-is.
-3. Acquire a single-run lock before writing knowledge-base state. If a lock exists, stop instead of running two summarizers.
+3. Acquire a single-run lock before writing shared/global knowledge-base state. Device-local sync runs may proceed concurrently only when each run writes a distinct `system/sync/device-ingestions/<node>/` folder.
 4. Discover changed or pending project notes across all reachable registered project paths.
 5. Resolve each source note identity as:
    - project slug or path
@@ -50,12 +55,14 @@ Use these states for automated ingestion tracking:
    - work date
    - node, inferred as `default` only for legacy unsuffixed notes
    - source hash or Git object ID when available
-6. Compare each source against `system/sync/ingestion-ledger.yaml`; skip only sources with an `ingested` entry for the same project/source/hash.
-7. Add newly discovered or changed sources to the pending queue before attempting summarisation.
-8. Attempt summarisation by project and work date, merging all date-matching source notes.
-9. If summarisation succeeds, update workstream pages, daily summaries, ingestion ledger, pending queue, and today's daily log.
-10. If summarisation fails safely, leave existing summaries unchanged and keep or update the pending queue.
-11. Release the lock and commit/push only knowledge-base changes.
+6. For global/coordinator ingestion, compare each source against `system/sync/ingestion-ledger.yaml`; skip only sources with an `ingested` entry for the same project/source/hash.
+7. For device-local staging, compare each source against `system/sync/device-ingestions/<node>/ledger.yaml`; skip only sources with a `published` entry for the same project/source/hash.
+8. Add newly discovered or changed sources to the matching pending queue before attempting summarisation.
+9. Attempt summarisation by project and work date, merging all date-matching source notes.
+10. If global summarisation succeeds, update workstream pages, daily summaries, root ingestion ledger, root pending queue, and today's daily log.
+11. If device-local staging succeeds, update only `system/sync/device-ingestions/<node>/` and optional device summary paths; do not update global workstream pages, global daily logs, or root ledgers.
+12. If summarisation fails safely, leave existing summaries unchanged and keep or update the matching pending queue.
+13. Release the lock when one was acquired and commit/push only allowed knowledge-base changes.
 
 ## Limit And Failure Fallback
 
@@ -71,7 +78,7 @@ If the agent hits a model limit, rate limit, weekly limit, network failure, unav
 Acceptable visibility-only entry:
 
 ```md
-- Pending synthesis: detected `example-project` note for `2026-05-04` from node `laptop`; source at `/path/to/project/memory/notes/2026-05-04-laptop.md`.
+- Pending synthesis: detected `cfpl-raghu` note for `2026-05-04` from node `mobai`; source at `/path/to/project/memory/notes/2026-05-04-mobai.md`.
 ```
 
 This entry is not a durable summary and must not cause the source to be marked `ingested`.
@@ -82,6 +89,7 @@ Use the pending queue for sources that are detected but not yet safely synthesiz
 
 ```text
 system/sync/pending-ingestions.yaml
+system/sync/device-ingestions/<node>/pending-ingestions.yaml
 ```
 
 Each pending item should include:
@@ -97,7 +105,7 @@ Each pending item should include:
 - `last_attempt_at`
 - `attempts`
 
-If the queue file does not exist, create it from `system/sync/pending-ingestions.example.yaml`.
+If the queue file does not exist, create it from `system/sync/pending-ingestions.example.yaml` or the same schema under the node-local path.
 
 ## Ingestion Ledger
 
@@ -105,9 +113,10 @@ Use the ledger for sources that were successfully synthesized:
 
 ```text
 system/sync/ingestion-ledger.yaml
+system/sync/device-ingestions/<node>/ledger.yaml
 ```
 
-Each ingested item should include:
+Each global ingested item should include:
 
 - `project`
 - `work_date`
@@ -119,10 +128,19 @@ Each ingested item should include:
 
 When a source file changes, replace the older ledger entry for the same project/source only after the refreshed summary is written.
 
+Each device-published item should include the same identity fields plus:
+
+- `published_at`
+- `state: published`
+
+Publishing to device staging is not the same as global ingestion; the coordinator later records `state: ingested` in the root ledger after global synthesis is updated.
+
 ## Rules
 
 - Keep source notes untouched.
 - Keep external project repositories read-only unless the user explicitly requested project-memory initialization or alignment.
+- Keep non-primary automation writes under the current node's `system/sync/device-ingestions/<node>/` and optional device summary paths.
+- Do not delete device staging after aggregation; use the root ingestion ledger to avoid duplicate global synthesis.
 - Prefer retryable queue updates over lossy summaries.
 - Back off repeated failures instead of retrying in a tight loop.
 - If notes conflict, mark the relevant queue item as `conflict` and record the uncertainty rather than silently choosing one source.

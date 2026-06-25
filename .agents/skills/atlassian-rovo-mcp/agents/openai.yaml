@@ -1,0 +1,11 @@
+interface:
+  display_name: "Atlassian Rovo MCP"
+  short_description: "Use Jira and Confluence through Rovo MCP."
+  default_prompt: "Use $atlassian-rovo-mcp to set up or use the Atlassian Rovo MCP server for Jira and Confluence."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "atlassian"
+      description: "Atlassian Rovo remote MCP server"
+      transport: "streamable_http"
+      url: "https://mcp.atlassian.com/v1/mcp/authv2"

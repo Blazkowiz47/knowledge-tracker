@@ -14,7 +14,7 @@ Use:
 KB_NODE_NAME
 ```
 
-`KB_NODE_NAME` is the stable lowercase node slug for the current device or server, for example `laptop`, `oslo-laptop`, `workstation-01`, or `gpu-node-01`.
+`KB_NODE_NAME` is the stable lowercase node slug for the current device or server, for example `mobai`, `oslo-laptop`, `workstation-01`, or `a100-node-01`.
 
 If a device-scoped summary is requested and `KB_NODE_NAME` is not set or cannot be read, ask the user for the stable node name. Do not invent generic node names.
 
@@ -29,6 +29,7 @@ If a device-scoped summary is requested and `KB_NODE_NAME` is not set or cannot 
 Device summaries:
 
 ```text
+system/sync/device-ingestions/<node>/YYYY-MM-DD.md
 system/sync/device-days/<node>/YYYY-MM-DD.md
 system/sync/device-months/<node>/YYYY/MM.md
 system/sync/device-years/<node>/YYYY.md
@@ -48,10 +49,10 @@ Device summaries should include compact metadata when useful:
 
 ```yaml
 scope: device-day
-node: laptop
+node: mobai
 period: 2026-05-04
 sources:
-  - /absolute/path/to/project/memory/notes/2026-05-04-laptop.md
+  - /absolute/path/to/project/memory/notes/2026-05-04-mobai.md
 last_refreshed_at:
 ```
 
@@ -63,7 +64,7 @@ Combined summaries should record coverage when the source set is incomplete or u
 
 ```yaml
 coverage:
-  nodes: [laptop, oslo-laptop]
+  nodes: [mobai, oslo-laptop]
   missing_nodes: [workstation-01]
   source_level: combined-days-and-device-days
 ```
@@ -79,18 +80,22 @@ When the user asks for this device's day summary:
 3. Read local or synced project notes for that node and date:
    - `memory/notes/YYYY-MM-DD-<node>.md`
    - legacy `memory/notes/YYYY-MM-DD.md` only if it is clearly the active note for this node/date.
-4. Write or refresh `system/sync/device-days/<node>/YYYY-MM-DD.md`.
-5. Do not update the combined daily summary unless the user asked for the combined day.
+4. Also read this node's staged device-ingestion record for the date when present:
+   - `system/sync/device-ingestions/<node>/YYYY-MM-DD.md`
+5. Write or refresh `system/sync/device-days/<node>/YYYY-MM-DD.md`.
+6. Do not update the combined daily summary unless the user asked for the combined day.
 
 When the user asks for a normal day summary:
 
 1. Resolve the date.
 2. Prefer existing device-day summaries:
    - `system/sync/device-days/*/YYYY-MM-DD.md`
-3. Also use relevant project notes if device-day summaries are missing or stale.
-4. Write or refresh the combined day summary:
+3. Also use staged device-ingestion records:
+   - `system/sync/device-ingestions/*/YYYY-MM-DD.md`
+4. Also use relevant project notes if device summaries/staging are missing or stale and the command context allows direct project reads.
+5. Write or refresh the combined day summary:
    - `wiki/logs/YYYY/MM/DD.md`
-5. Record coverage and any missing or late nodes when relevant.
+6. Record coverage and any missing or late nodes when relevant.
 
 ## Monthly Summaries
 
