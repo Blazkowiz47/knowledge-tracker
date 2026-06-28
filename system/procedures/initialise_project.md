@@ -34,7 +34,7 @@ If optional values are not provided, infer conservative defaults from the projec
 
 ## Write Scope
 
-Project memory initialization is the only default exception to the knowledge-base rule that external project repositories are read-only.
+Project memory initialization and project memory initialization checks are the only default exceptions to the knowledge-base rule that external project repositories are read-only.
 
 During this procedure, allowed target-project edits are limited to:
 
@@ -48,7 +48,9 @@ During this procedure, allowed target-project edits are limited to:
 - `memory/notes/YYYY-MM-DD.md` or `memory/notes/YYYY-MM-DD-<node>.md`
 - `memory/scratch/index.md`
 - `memory/integrations/index.md` and existing enabled integration files/folders under `memory/integrations/`
-- `memory/commands/` project memory command specs
+- `.agents/skills/` project-local Codex memory skills
+- `.claude/skills/` project-local Claude memory skills
+- legacy `memory/commands/` migration only when `/check-initialisation` is refactoring old template-derived command specs into skills
 
 Allowed knowledge-base edits are limited to:
 
@@ -94,23 +96,34 @@ memory/
   runs.md
   learnings.md
   decisions.md
-  commands/
-    index.md
-    remember.md
-    log.md
-    run.md
-    decision.md
-    learned.md
-    status.md
-    scratch.md
-    organise-scratch.md
-    check-initialisation.md
   notes/
     YYYY-MM-DD-<node>.md
   scratch/
     index.md
   integrations/
     index.md
+.agents/
+  skills/
+    remember/SKILL.md
+    log/SKILL.md
+    run/SKILL.md
+    decision/SKILL.md
+    learned/SKILL.md
+    status/SKILL.md
+    scratch/SKILL.md
+    organise-scratch/SKILL.md
+    check-initialisation/SKILL.md
+.claude/
+  skills/
+    remember/SKILL.md
+    log/SKILL.md
+    run/SKILL.md
+    decision/SKILL.md
+    learned/SKILL.md
+    status/SKILL.md
+    scratch/SKILL.md
+    organise-scratch/SKILL.md
+    check-initialisation/SKILL.md
 ```
 
 `memory/scratch/` is the project-local holding area for uncertain project-only captures and multi-day, in-flight working notes. Keep `memory/scratch/index.md` as the short routing guide. Use one topic per scratch file, for example `memory/scratch/dataset-consistency.md`. Durable findings inside a scratch file are promoted to `memory/learnings.md`, `memory/decisions.md`, `memory/runs.md`, `memory/index.md`, or a dated note; the scratch file itself is deleted or marked closed when the investigation closes.
@@ -161,7 +174,26 @@ Do not rename existing legacy notes during initialization. Existing `YYYY-MM-DD.
 
 Use the templates in `system/templates/` for new files.
 
-Use `system/templates/project-commands/` for new `memory/commands/` files.
+Use `system/templates/project-skills/<skill>/SKILL.md` for both Codex and Claude project-local memory skills. Create the same direct skill names under both `.agents/skills/` and `.claude/skills/`:
+
+```text
+remember
+log
+run
+decision
+learned
+status
+scratch
+organise-scratch
+check-initialisation
+```
+
+Do not create `memory/commands/` for new projects by default. Treat `system/templates/project-commands/` as legacy migration comparison material only.
+
+During `/check-initialisation`, if legacy `memory/commands/` exists, first ensure the matching project-local skills exist. Then:
+
+- If every legacy command file is an exact template-derived file, remove the legacy `memory/commands/` directory after the skills are in place.
+- If any legacy command file has custom project-specific content, preserve `memory/commands/`, report the custom files, and do not delete them.
 
 Do not overwrite existing memory files. If a file exists, update it only when the update is necessary and consistent with its current content.
 
@@ -218,7 +250,8 @@ The inserted block must instruct agents to:
 - Treat scratch-only work as scratch-only: do not create or update today's project note unless the scratch result is promoted, a run/decision/learning/status changes, or the user explicitly asks to log it.
 - Use `memory/integrations/` for optional external connections and read `memory/integrations/index.md` before logging project work when it exists.
 - Treat external integrations as visibility surfaces, not the canonical memory. Missing tools or authentication must never block local memory updates; save drafts locally and mark external publishing as skipped on the current node.
-- Use `memory/commands/` slash command specs when the user starts a prompt with a project memory command.
+- Use project-local skills under `.agents/skills/` and `.claude/skills/` when the user starts a prompt with a project memory shortcut or explicitly asks to record project memory.
+- Treat `memory/commands/` as a legacy fallback only when project-local memory skills are missing.
 - Avoid pasting giant logs; summarize and link to paths.
 - Prefer compact durable learning over exhaustive raw dumping.
 
@@ -319,7 +352,8 @@ Include:
 - Whether `CLAUDE.md` was created as an import stub, already correct, or converted after preserving Claude-only content
 - Whether new memory files were created
 - Which project note naming convention was used: legacy `YYYY-MM-DD.md` or node-specific `YYYY-MM-DD-<node>.md`
-- Whether project memory command specs under `memory/commands/` were created or aligned
+- Whether project-local memory skills under `.agents/skills/` and `.claude/skills/` were created or aligned
+- Whether legacy `memory/commands/` was absent, migrated, preserved due to custom content, or left as a fallback
 - Whether project `memory/scratch/index.md` was created or aligned
 - Whether project `memory/integrations/index.md` was created or aligned
 - That the target project repository was not staged, committed, or pushed
@@ -334,8 +368,8 @@ Before finishing, verify:
 - `memory/notes/` exists.
 - `memory/scratch/index.md` exists.
 - `memory/integrations/index.md` exists.
-- `memory/commands/index.md` exists and links the project memory commands.
-- Project command specs exist for `/remember`, `/log`, `/run`, `/decision`, `/learned`, `/status`, `/scratch`, `/organise-scratch`, and `/check-initialisation`.
+- Project-local memory skills exist under `.agents/skills/` and `.claude/skills/` for `remember`, `log`, `run`, `decision`, `learned`, `status`, `scratch`, `organise-scratch`, and `check-initialisation`.
+- Legacy `memory/commands/` is absent, or preserved only because it contains custom project-specific content.
 - Today's note exists.
 - Project `AGENTS.md` contains exactly one Knowledge Tracker memory block.
 - Project `CLAUDE.md` is a regular file whose first non-empty line is exactly `@AGENTS.md`.

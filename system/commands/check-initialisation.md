@@ -12,7 +12,8 @@ This command uses the same narrow exception as project memory initialization. It
 
 - target project `AGENTS.md` Knowledge Tracker memory block
 - target project `CLAUDE.md` import stub
-- target project `memory/` files, including `memory/scratch/`, `memory/integrations/`, and `memory/commands/`
+- target project `memory/` files, including `memory/scratch/`, `memory/integrations/`, and legacy `memory/commands/` migration
+- target project project-local memory skills under `.agents/skills/` and `.claude/skills/`
 - knowledge-base workstream pages and today's daily log
 
 It must not edit target project source code, configs, experiment files, outputs, or unrelated docs. It must not stage, commit, or push the target project repository.
@@ -25,7 +26,9 @@ It must not edit target project source code, configs, experiment files, outputs,
 4. If anything is missing or stale, align only the allowed memory infrastructure:
    - ensure exactly one Knowledge Tracker memory block in `AGENTS.md`
    - ensure `CLAUDE.md` is a regular file whose first non-empty line is exactly `@AGENTS.md`
-   - ensure required memory files, `memory/scratch/index.md`, `memory/integrations/index.md`, and `memory/commands/` specs exist
+   - ensure required memory files, `memory/scratch/index.md`, and `memory/integrations/index.md` exist
+   - ensure project-local memory skills exist under `.agents/skills/` and `.claude/skills/` for `remember`, `log`, `run`, `decision`, `learned`, `status`, `scratch`, `organise-scratch`, and `check-initialisation`
+   - migrate legacy `memory/commands/` exact-template specs into project-local skills; preserve and report custom legacy specs instead of deleting them blindly
    - if an integration provider file already exists, align only its local scaffolding and skip any external checks that need unavailable tools or authentication
    - update the workstream page and daily log if alignment changed anything
 5. Verify the target project repository has not been staged, committed, or pushed.

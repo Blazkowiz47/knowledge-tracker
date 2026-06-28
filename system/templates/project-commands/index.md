@@ -1,6 +1,8 @@
-# Project Memory Commands
+# Legacy Project Memory Commands
 
-Portable slash-command specs for project-local memory work. If a prompt begins with one of these commands, read the matching file and follow it as a shortcut to the project `AGENTS.md` memory directives.
+Legacy portable slash-command specs for project-local memory work. New initialization should create project-local skills from `system/templates/project-skills/` instead of `memory/commands/`.
+
+If an older project still has these files and no matching project-local memory skills, read the matching file and follow it as a shortcut to the project `AGENTS.md` memory directives.
 
 Command specs do not replace project-specific instructions. If there is a conflict, preserve and follow the project instructions first.
 

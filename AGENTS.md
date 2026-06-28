@@ -14,8 +14,8 @@ This repository is the main knowledge base for the user's projects, research, ex
 ## Repository Boundary And Sync
 
 - When operating from this knowledge-base repository, treat external project repositories as read-only by default.
-- The only default exception is explicit project memory initialization: when the user asks to initialize, initialise, set up, or add memory for a project path, Codex may update only that project's memory infrastructure.
-- During project memory initialization, allowed external-project edits are limited to the target project's `AGENTS.md` Knowledge Tracker memory block, `CLAUDE.md` import stub, and `memory/` files.
+- The only default exceptions are explicit project memory initialization and project memory initialization checks: when the user asks to initialize, initialise, set up, add memory, verify, repair, align, or finish memory initialization for a project path, Codex may update only that project's memory infrastructure.
+- During project memory initialization and project memory initialization checks, allowed external-project edits are limited to the target project's `AGENTS.md` Knowledge Tracker memory block, `CLAUDE.md` import stub, `memory/` files, project-local Codex skills under `.agents/skills/`, and project-local Claude skills under `.claude/skills/`.
 - Do not edit external project source code, experiment scripts, configs, data files, outputs, or unrelated documentation from a knowledge-base session.
 - Do not stage, commit, or push changes in external project repositories from a knowledge-base session, including project memory initialization changes.
 - If any other task would require modifying an external project repository, stop and ask the user to run Codex from that project repository or to explicitly override this boundary.
@@ -110,7 +110,8 @@ Do not invent a different project memory structure unless the user explicitly as
 - Scratch-only project work should stay in `memory/scratch/`; agents should not create or update a project daily note unless the scratch result is promoted, a run/decision/learning/status changes, or the user explicitly asks to log it.
 - Generate or maintain `memory/integrations/index.md` so project-local agents have a device-portable place for optional external connections.
 - Treat integrations as optional. Missing tools, missing authentication, or unavailable network access must never block local project memory updates; draft or skip external publishing according to the integration policy.
-- Generate or maintain project memory command specs under `memory/commands/` so project-local agents can use shortcuts such as `/remember`, `/log`, `/run`, `/decision`, `/learned`, `/status`, `/scratch`, `/organise-scratch`, and `/check-initialisation`.
+- Generate or maintain project-local memory skills under `.agents/skills/` and `.claude/skills/` so Codex and Claude can use shortcuts named `remember`, `log`, `run`, `decision`, `learned`, `status`, `scratch`, `organise-scratch`, and `check-initialisation`.
+- Treat `memory/commands/` as a legacy command-spec surface. Do not create it for new projects by default. During `/check-initialisation`, migrate exact-template legacy command specs into project-local skills; preserve and report custom legacy command specs instead of deleting them blindly.
 - Prefer project daily notes named `memory/notes/YYYY-MM-DD-<node>.md` for new work, where `<node>` is a stable lowercase device/server slug.
 - If the stable `<node>` name is not known, ask the user for it before creating or writing a new node-specific project note; do not invent generic names such as `server`, `gpu`, `desktop`, or `default`.
 - Preserve backward compatibility by reading existing `memory/notes/YYYY-MM-DD.md` files as legacy/default-node notes. Continue writing an unsuffixed note only when it is already the active note for that date or the user explicitly asks to keep the legacy convention.

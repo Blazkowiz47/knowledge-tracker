@@ -19,23 +19,26 @@ This project participates in the Knowledge Tracker memory system. These directiv
 - Use `memory/scratch/` for uncertain project-only captures and in-flight notes that are not ready for `notes/`, `runs.md`, `learnings.md`, `decisions.md`, or `index.md`.
 - Scratch-only work should stay in `memory/scratch/`; do not create or update today's project note just because the user asked to work on scratch.
 - Use `memory/integrations/` for optional external connections such as Jira, Confluence, GitHub Issues, Linear, Slack/Teams, or manual draft-only publishing.
-- Use `memory/commands/` for portable project-memory slash command specs when present.
+- Use project-local skills for project-memory shortcuts when present:
+  - Codex skills: `.agents/skills/<skill>/SKILL.md`
+  - Claude skills: `.claude/skills/<skill>/SKILL.md`
+- Treat `memory/commands/` as a legacy fallback only when project-local memory skills are missing.
 
-### Project Memory Commands
+### Project Memory Skills
 
-If the user starts a prompt with a project memory command, follow the matching spec in `memory/commands/`:
+If the user starts a prompt with a project memory shortcut, or explicitly asks to record project memory, use the matching local skill:
 
-- `/remember` - add a compact note to today's project memory.
-- `/log` - record session work or a meaningful project change.
-- `/run` - add or update an experiment, evaluation, or long-running job.
-- `/decision` - record a project decision and rationale.
-- `/learned` - record a durable finding or reusable lesson.
-- `/status` - update the project context card.
-- `/scratch` - capture an uncertain or in-flight project-local note.
-- `/organise-scratch` - route project-local scratch notes into the right memory files.
-- `/check-initialisation` - verify and align the project memory structure.
+- `remember` - add a compact note to today's project memory.
+- `log` - record session work or a meaningful project change.
+- `run` - add or update an experiment, evaluation, or long-running job.
+- `decision` - record a project decision and rationale.
+- `learned` - record a durable finding or reusable lesson.
+- `status` - update the project context card.
+- `scratch` - capture an uncertain or in-flight project-local note.
+- `organise-scratch` - route project-local scratch notes into the right memory files.
+- `check-initialisation` - verify and align the project memory structure.
 
-These command specs are shortcuts. They do not override project-specific instructions or this `AGENTS.md`.
+These skills are shortcuts. They do not override project-specific instructions or this `AGENTS.md`.
 
 ### When To Update Memory
 

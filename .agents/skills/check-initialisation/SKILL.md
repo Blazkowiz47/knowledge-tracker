@@ -33,6 +33,7 @@ Use this skill as a thin Codex adapter for the knowledge-base `/check-initialisa
 ## Boundaries
 
 - From the knowledge-base repo, modify only the target project's memory infrastructure allowed by the command spec.
+- The initialization/check path may align project-local memory skills under the target project's `.agents/skills/` and `.claude/skills/`.
 - Do not edit target project source code, experiment files, configs, outputs, or unrelated docs.
 - Do not stage, commit, or push the target project repository.
 - After knowledge-base edits, commit and push only the knowledge-base repository according to `AGENTS.md`.

@@ -24,6 +24,7 @@ Use this skill as a thin Codex adapter for the knowledge-base project-memory ini
 ## Boundaries
 
 - From the knowledge-base repo, modify only the target project's memory infrastructure allowed by the initialization procedure.
+- The initialization path may create or align project-local memory skills under the target project's `.agents/skills/` and `.claude/skills/`.
 - Do not edit target project source code, experiment files, configs, outputs, or unrelated docs.
 - Do not stage, commit, or push the target project repository.
 - After knowledge-base edits, commit and push only the knowledge-base repository according to `AGENTS.md`.
