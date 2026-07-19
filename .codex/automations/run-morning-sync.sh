@@ -22,10 +22,12 @@ normalize_node() {
 
 SCRIPT_DIR="$(CDPATH= cd "$(dirname "$0")" && pwd -P)"
 REPO_DIR="$(CDPATH= cd "$SCRIPT_DIR/../.." && pwd -P)"
-CODEX_BIN="${CODEX_BIN:-/usr/local/bin/codex}"
+CODEX_BIN="${CODEX_BIN:-}"
 PROMPT_FILE="$SCRIPT_DIR/morning-sync.prompt.md"
 LOG_DIR="$REPO_DIR/.tmp/codex-automations"
 LOCK_DIR="$LOG_DIR/automation.lock"
+LOCK_PID_FILE="$LOCK_DIR/pid"
+RUN_LOG="$LOG_DIR/morning-sync.log"
 
 if [ -z "${HOME:-}" ]; then
   printf '%s\n' "HOME is not set; cannot locate CODEX_HOME for Codex automation." >&2
@@ -35,6 +37,14 @@ fi
 export HOME
 export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 export PATH="/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}"
+
+if [ -z "$CODEX_BIN" ]; then
+  CODEX_BIN="$(command -v codex 2>/dev/null || true)"
+fi
+if [ -z "$CODEX_BIN" ] || [ ! -x "$CODEX_BIN" ]; then
+  printf '%s\n' "Set CODEX_BIN to an executable Codex CLI path." >&2
+  exit 1
+fi
 
 COORDINATOR_NODE="$(normalize_node "${KB_COORDINATOR_NODE:-main-laptop}")"
 NODE_NAME="${KB_NODE_NAME:-}"
@@ -58,10 +68,30 @@ export KB_COORDINATOR_NODE="$COORDINATOR_NODE"
 
 mkdir -p "$LOG_DIR"
 if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-  printf '%s %s\n' "$(timestamp)" "another Knowledge Tracker automation is already running"
-  exit 0
+  existing_pid="$(sed -n '1p' "$LOCK_PID_FILE" 2>/dev/null || true)"
+  if [ -n "$existing_pid" ] && kill -0 "$existing_pid" 2>/dev/null; then
+    printf '%s %s\n' "$(timestamp)" "another Knowledge Tracker automation is already running"
+    exit 0
+  fi
+  rm -f "$LOCK_PID_FILE"
+  if ! rmdir "$LOCK_DIR" 2>/dev/null || ! mkdir "$LOCK_DIR" 2>/dev/null; then
+    printf '%s %s\n' "$(timestamp)" "could not recover stale automation lock" >&2
+    exit 1
+  fi
 fi
-trap 'rmdir "$LOCK_DIR"' EXIT
+printf '%s\n' "$$" > "$LOCK_PID_FILE"
+cleanup() {
+  rm -f "$LOCK_PID_FILE"
+  rmdir "$LOCK_DIR" 2>/dev/null || true
+}
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+if [ -f "$RUN_LOG" ] && [ "$(wc -c < "$RUN_LOG")" -gt 5242880 ]; then
+  mv "$RUN_LOG" "$RUN_LOG.1"
+fi
 
 {
   printf '\n=== %s morning device sync (%s) ===\n' "$(timestamp)" "$KB_NODE_NAME"
@@ -72,4 +102,4 @@ trap 'rmdir "$LOCK_DIR"' EXIT
     --sandbox danger-full-access \
     -o "$LOG_DIR/morning-sync-last.md" \
     - < "$PROMPT_FILE"
-} >> "$LOG_DIR/morning-sync.log" 2>&1
+} >> "$RUN_LOG" 2>&1

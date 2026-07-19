@@ -1,4 +1,0 @@
-interface:
-  display_name: "Organise Scratch"
-  short_description: "Route wiki scratch captures."
-  default_prompt: "Use $organise-scratch to route wiki scratch captures into their proper homes."

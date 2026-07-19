@@ -1,0 +1,4 @@
+interface:
+  display_name: "Capture"
+  short_description: "Route any note to its canonical home"
+  default_prompt: "Use $capture to record this information in the smallest appropriate knowledge-base destination."

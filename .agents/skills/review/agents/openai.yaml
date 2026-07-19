@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review"
+  short_description: "Review focus and workstream lifecycle state"
+  default_prompt: "Use $review to assess the portfolio, clean stale threads, and select a small current focus."

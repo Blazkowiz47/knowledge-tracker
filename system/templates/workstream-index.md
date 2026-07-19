@@ -1,11 +1,18 @@
+---
+workstream: {{WORKSTREAM_SLUG}}
+state: next
+last_activity: {{DATE}}
+review_after:
+---
+
 # {{PROJECT_NAME}}
 
 ## Context Card
 
-Status:
+Status note:
 Domain:
 Tags:
-Project path:
+Project paths: See `system/registry/projects.yaml`.
 Devices/servers:
 Latest useful result:
 Current blocker:
@@ -24,4 +31,5 @@ Next action:
 
 ## Links
 
+- Project registry: `system/registry/projects.yaml`
 - Project memory: `{{PROJECT_PATH}}/memory/index.md`

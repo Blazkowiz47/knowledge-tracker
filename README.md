@@ -8,8 +8,8 @@ It is intentionally empty: clone it, rename it if you want, and let your own pro
 
 1. Fork this repository or clone it into a new private repository.
 2. Open the repository as an Obsidian vault, or edit the Markdown files directly.
-3. Set your device name with `KB_NODE_NAME`, for example `laptop` or `workstation-01`, if you want device-aware summaries.
-4. Start from `wiki/index.md` and `wiki/today.md`.
+3. Register nodes and the coordinator in `system/registry/nodes.yaml`, then set `KB_NODE_NAME` to a canonical node.
+4. Start from `wiki/index.md` and run `/day start` to generate `wiki/today.md`.
 5. Add active projects by following `system/procedures/initialise_project.md`.
 6. Let project repositories keep detailed operational memory in their own `memory/` folders.
 7. Use this knowledge base for synthesis: workstream summaries, daily logs, planning, decisions, and cross-project learning.
@@ -81,14 +81,20 @@ When using an agent:
 3. Work inside individual repositories as usual.
 4. Let project-level agents maintain date-wise project memory in `memory/notes/`.
 5. Optionally connect project memory to external systems through `memory/integrations/`, keeping local memory canonical and using drafts when tools are unavailable.
-6. Return here at the end of the day and sync according to your device role:
-   - Use `/device-sync` on non-primary devices to publish node-owned staging files without touching global summaries.
-   - Use `/aggregate-sync` on one primary/coordinator device to merge staged device outputs into global KB synthesis.
-   - Use `/sync` only when this device is acting as the primary/coordinator and direct global ingestion is intended.
+6. Return here and run `/sync`; the node registry selects publisher or coordinator behavior.
+7. Use `/day close` for inbox cleanup, meaningful synthesis, and carry-forward.
 
 The main instructions live in `AGENTS.md`.
 
-Repo-local Codex skill adapters live in `.agents/skills/`. They expose the same workflows as the command specs, such as `/log-day`, `/ingest`, `/device-sync`, `/aggregate-sync`, `/check-initialisation`, `/summarise`, `/plan-tomorrow`, and `/sync`, while keeping `AGENTS.md` and `system/commands/` as the canonical instructions.
+Repo-local skills expose the small public surface: `/sync`, `/capture`, `/day`, `/review`, `/doctor`, `/initialise-project`, and `/check-initialisation`. Detailed legacy commands remain internal automation primitives.
+
+## Everyday Commands
+
+- `/sync` — role-aware synchronization
+- `/capture` — route any note to its canonical home
+- `/day start` and `/day close` — open or close the knowledge workday
+- `/review` — review focus and workstream lifecycle state
+- `/doctor` — read-only structural and sync-health audit
 
 ## Automation Setup
 
@@ -98,8 +104,8 @@ The scaffold includes repo-local Codex automation wrappers under `.codex/automat
 
 Use one coordinator device and any number of non-coordinator devices.
 
-- Coordinator device: runs `/device-sync`, then `/aggregate-sync`, then combined summaries or planning/standup synthesis.
-- Non-coordinator devices: run `/device-sync` only and publish node-owned staging files.
+- Coordinator device: `/sync` publishes its local state and then aggregates global synthesis.
+- Non-coordinator devices: `/sync` selects publisher-only behavior.
 
 Set a stable node name on every device:
 
@@ -120,7 +126,7 @@ On the coordinator, create Codex app automations or local scheduler jobs that ru
 Morning coordinator prompt shape:
 
 ```text
-Run $device-sync for this node, then $aggregate-sync as the coordinator, then recommend today's focus items.
+Run $sync, then $day with the start subcommand.
 If useful for your workflow, include a short standup section with:
 - Since last standup
 - Today
@@ -130,10 +136,10 @@ If useful for your workflow, include a short standup section with:
 Evening coordinator prompt shape:
 
 ```text
-Run $device-sync for this node, then $aggregate-sync as the coordinator, then run $summarise-day for today.
+Run $sync, then $day with the close subcommand.
 ```
 
-The coordinator should be the only unattended device that runs `/aggregate-sync`, combined/global `/summarise-day`, or direct global `/sync`.
+The coordinator remains the only unattended writer of global synthesis; `/sync` selects that role from the registry.
 
 ### Non-Coordinator Cron
 
@@ -179,11 +185,12 @@ Then run `/mcp` in Claude Code to authenticate. Missing MCP setup, missing authe
 
 - `wiki/index.md` - main map
 - `wiki/scratch/README.md` - temporary capture area
-- `wiki/today.md` - current daily planning surface
+- `wiki/today.md` - generated daily brief
 - `wiki/workstreams/index.md` - active workstreams and project memories
 - `.agents/skills/` - repo-local Codex skill adapters for the command workflows
 - `.codex/automations/` - optional scheduler wrappers and prompts for device sync automation
 - `system/commands/index.md` - portable slash-command specs
+- `system/registry/` - canonical node roles and project paths
 - `system/sync/README.md` - conflict-safe sync conventions for per-device staging and global aggregation
 - `system/templates/project-integrations-index.md` - optional project integration scaffold, including Jira and Confluence patterns
 - `system/procedures/initialise_project.md` - how agents initialize memory inside a project

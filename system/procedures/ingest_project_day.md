@@ -17,7 +17,7 @@ Usually:
   - Device-staging changed-source mode: default for `/device-sync` on non-primary devices.
   - Global aggregation mode: default for `/aggregate-sync` when consuming device staging.
   - Date-scoped mode: use when the user names a date or explicitly asks for today's notes.
-- One or more project paths, or all registered project paths listed in `wiki/workstreams/index.md`.
+- One or more project paths, or all sync-enabled paths in `system/registry/projects.yaml`.
 - Candidate source notes:
   - `memory/notes/YYYY-MM-DD.md`
   - `memory/notes/YYYY-MM-DD-<node>.md`
@@ -37,7 +37,7 @@ Usually:
 Use this mode for `/sync`, `/ingest` without a named date, and requests to ingest all registered or changed project memories into global KB synthesis on the primary/coordinator machine.
 
 1. Read `system/sync/ingestion-ledger.yaml` if it exists.
-2. Discover every reachable registered project path in `wiki/workstreams/index.md`, unless the user named a subset.
+2. Resolve the canonical node and discover reachable sync-enabled paths from `system/registry/projects.yaml`, unless the user named a subset.
 3. For each reachable project, scan all matching `memory/notes/*.md` source notes.
 4. For each source, resolve:
    - project slug or registered workstream
@@ -51,7 +51,7 @@ Use this mode for `/sync`, `/ingest` without a named date, and requests to inges
    - it is present in `pending-ingestions.yaml` with `pending`, `deferred`, or `conflict` state and can now be safely handled, or
    - the user explicitly asks to refresh or re-ingest it.
 6. Group sources by project and `work_date`. When one source for a project/date needs ingestion, read all source notes for that same project/date so node-specific notes merge coherently.
-7. If no sources need ingestion, append a compact audit entry to today's knowledge-base log and report the knowledge base is current.
+7. If no sources need ingestion, update operational status and report current without creating a human log.
 
 ### Device-Staging Changed-Source Mode
 
@@ -59,7 +59,7 @@ Use this mode for `/device-sync` and non-primary multi-device automation.
 
 1. Resolve `KB_NODE_NAME`; ask the user for the stable node slug if it is missing.
 2. Read `system/sync/device-ingestions/<node>/ledger.yaml` if it exists.
-3. Discover every reachable registered project path in `wiki/workstreams/index.md`, unless the user named a subset.
+3. Discover reachable sync-enabled paths for this node from `system/registry/projects.yaml`, unless the user named a subset.
 4. For each reachable project, scan all matching `memory/notes/*.md` source notes that belong to this node or are legacy/default-node notes visible from this node.
 5. Resolve project slug, source path, work date, node, and source hash as in global changed-source mode.
 6. A source needs device publishing when no `published` entry exists in the node ledger for the same project/source/hash, the prior node-ledger entry for that project/source has a different hash, it is present in the node pending queue, or the user explicitly asks to refresh it.
@@ -94,9 +94,9 @@ Use this mode when the user names a date or explicitly asks for today's project 
 
 ## Steps
 
-1. Follow `system/procedures/maintain_daily_log.md` so today's knowledge-base daily log exists for global modes. In device-staging mode, do not create or edit global daily logs merely to publish node staging.
+1. Do not create a human log before discovery. Follow `maintain_daily_log.md` only after meaningful global synthesis or a failure requiring attention.
 2. Select changed-source mode or date-scoped mode from the user's request and command context.
-3. Identify the registered project paths in scope from `wiki/workstreams/index.md`, plus any explicit project paths the user named.
+3. Identify project paths from `system/registry/projects.yaml`, plus explicit paths the user named.
 4. Keep project repositories read-only. If a registered path is unreachable on the current device, skip it and record that in the audit entry when useful.
 5. Identify candidate source notes according to the selected mode.
 6. Read the selected notes and each project `memory/index.md`.
@@ -123,7 +123,7 @@ Use this mode when the user names a date or explicitly asks for today's project 
 14. In global modes, update `wiki/today.md` or create a date-specific daily summary if requested. In device-staging mode, keep output under the current node's staging and device-summary paths.
 15. Update `system/sync/ingestion-ledger.yaml` for each source note successfully summarized into global knowledge-base files. Replace older entries for the same project/source with the new hash and `ingested_at` timestamp. In device-staging mode, update only `system/sync/device-ingestions/<node>/ledger.yaml` with `published_at` and `state: published`.
 16. If a previously pending or deferred source is successfully ingested or published, remove or mark the matching pending queue entry as ingested/published in the correct global or node-local queue.
-17. In global modes, append an ingestion entry, refresh entry, or no-op audit entry to today's detailed log at `wiki/logs/YYYY/MM/DD.md`. In device-staging mode, report the audit in the command output and avoid global log writes.
+17. Append human logs only for meaningful ingestion, refreshed synthesis, or failures requiring attention. Record no-op audits in operational status.
 
 ## Rules
 

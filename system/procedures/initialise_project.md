@@ -105,22 +105,12 @@ memory/
 .agents/
   skills/
     remember/SKILL.md
-    log/SKILL.md
-    run/SKILL.md
-    decision/SKILL.md
-    learned/SKILL.md
-    status/SKILL.md
     scratch/SKILL.md
     organise-scratch/SKILL.md
     check-initialisation/SKILL.md
 .claude/
   skills/
     remember/SKILL.md
-    log/SKILL.md
-    run/SKILL.md
-    decision/SKILL.md
-    learned/SKILL.md
-    status/SKILL.md
     scratch/SKILL.md
     organise-scratch/SKILL.md
     check-initialisation/SKILL.md
@@ -174,15 +164,10 @@ Do not rename existing legacy notes during initialization. Existing `YYYY-MM-DD.
 
 Use the templates in `system/templates/` for new files.
 
-Use `system/templates/project-skills/<skill>/SKILL.md` for both Codex and Claude project-local memory skills. Create the same direct skill names under both `.agents/skills/` and `.claude/skills/`:
+Use `system/templates/project-skills/<skill>/SKILL.md` for both Codex and Claude project-local memory skills. Create the consolidated skill names under both `.agents/skills/` and `.claude/skills/`:
 
 ```text
 remember
-log
-run
-decision
-learned
-status
 scratch
 organise-scratch
 check-initialisation
@@ -190,10 +175,10 @@ check-initialisation
 
 Do not create `memory/commands/` for new projects by default. Treat `system/templates/project-commands/` as legacy migration comparison material only.
 
-During `/check-initialisation`, if legacy `memory/commands/` exists, first ensure the matching project-local skills exist. Then:
+During `/check-initialisation`, first ensure consolidated skills exist. Treat old direct-name skills and legacy `memory/commands/` as compatibility surfaces. Then:
 
-- If every legacy command file is an exact template-derived file, remove the legacy `memory/commands/` directory after the skills are in place.
-- If any legacy command file has custom project-specific content, preserve `memory/commands/`, report the custom files, and do not delete them.
+- Remove only exact historical-template copies after `remember` covers their behavior.
+- Preserve and report custom project-specific instructions.
 
 Do not overwrite existing memory files. If a file exists, update it only when the update is necessary and consistent with its current content.
 
@@ -296,6 +281,8 @@ test -f "$PROJECT_PATH/CLAUDE.md" && sed -n '1,5p' "$PROJECT_PATH/CLAUDE.md"
 
 ## Step 5: Register The Workstream In The Knowledge Base
 
+Resolve or add the canonical node in `system/registry/nodes.yaml`, map the workstream and node-specific path in `system/registry/projects.yaml`, and use the registry rather than the portfolio table as the discovery source.
+
 Create or update the workstream folder:
 
 ```text
@@ -325,6 +312,7 @@ Add the project to the Active table if it is not already listed. Use the absolut
 
 The workstream `index.md` must include:
 
+- YAML frontmatter with workstream slug, state, last activity, and optional review date
 - A compact context card
 - The absolute project path
 - Whether project-local `memory/` was created or already existed
@@ -368,7 +356,7 @@ Before finishing, verify:
 - `memory/notes/` exists.
 - `memory/scratch/index.md` exists.
 - `memory/integrations/index.md` exists.
-- Project-local memory skills exist under `.agents/skills/` and `.claude/skills/` for `remember`, `log`, `run`, `decision`, `learned`, `status`, `scratch`, `organise-scratch`, and `check-initialisation`.
+- Consolidated project-local memory skills exist under `.agents/skills/` and `.claude/skills/` for `remember`, `scratch`, `organise-scratch`, and `check-initialisation`.
 - Legacy `memory/commands/` is absent, or preserved only because it contains custom project-specific content.
 - Today's note exists.
 - Project `AGENTS.md` contains exactly one Knowledge Tracker memory block.

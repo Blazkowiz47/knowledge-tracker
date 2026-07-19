@@ -1,5 +1,7 @@
 # Command: /ingest
 
+Internal direct-ingestion primitive. Normal synchronization should use `/sync`.
+
 Ingest missing, changed, or date-scoped project memory notes into the knowledge base.
 
 ## Steps
@@ -10,7 +12,7 @@ Ingest missing, changed, or date-scoped project memory notes into the knowledge 
 4. If the user named a date, use date-scoped mode for that date and the requested project scope.
 5. Keep project repositories read-only while ingesting.
 6. If summarisation cannot be completed safely, follow the fallback rules in `system/procedures/automated_project_ingest.md` instead of writing a low-confidence summary.
-7. Append the ingestion detail, refresh detail, audit detail, or deferred-ingestion detail to today's knowledge-base daily log.
+7. Append meaningful ingestion, refresh, or attention-requiring deferred detail to human logs; record no-op audits in operational status.
 8. Commit and push knowledge-base changes only.
 
 For non-primary multi-device publishing, use `/device-sync` instead of `/ingest`. For the coordinator merge of staged device outputs, use `/aggregate-sync`.

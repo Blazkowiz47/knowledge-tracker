@@ -1,20 +1,34 @@
 # Workstreams
 
-Workstreams are active lines of work. A workstream may be a project, method, experiment family, demo, paper direction, or development effort.
+Compact state-grouped portfolio. Lifecycle state is canonical in workstream frontmatter; project paths are canonical in `system/registry/projects.yaml`; dated history belongs in workstream logs.
 
-## Active
+## Now
 
-| Workstream | Domain | Status | Project Path | Next Action |
-|---|---|---|---|---|
+| Workstream | Domain | Status note | Last activity |
+|---|---|---|---|
 
-## Recently Updated
+## Next
 
+| Workstream | Domain | Ready action | Last activity |
+|---|---|---|---|
+
+## Waiting
+
+| Workstream | Waiting for | Next review | Last activity |
+|---|---|---|---|
+
+## Parked
+
+| Workstream | Resume when | Last activity |
+|---|---|---|
 
 ## Archived
 
-- 
+| Workstream | Outcome | Last activity |
+|---|---|---|
 
 ## Maintenance
 
-- Every initialized project should have a matching `wiki/workstreams/<workstream-slug>/index.md`.
-- Keep this page as an overview, not a detailed project log.
+- Keep at most three workstreams in `now` unless broader focus is intentional.
+- Use `/review` to reclassify the portfolio and `/day start` to generate today's brief.
+- Do not add a chronological update feed here.

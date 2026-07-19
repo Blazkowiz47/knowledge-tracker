@@ -8,6 +8,7 @@ This project participates in the Knowledge Tracker memory system. These directiv
 - Keep `memory/index.md` as the fast project overview.
 - Keep today's project note updated during active work.
 - Prefer `memory/notes/YYYY-MM-DD-<node>.md` for new notes when a stable device/server node name is known.
+- Keep exactly one daily note per project/date/node. Put topic-specific or multi-document work in `memory/scratch/`; never encode a topic after the node suffix.
 - Ask the user for the stable `<node>` name if it is not known before creating or writing a new node-specific note.
 - Continue reading `memory/notes/YYYY-MM-DD.md` for legacy project memory.
 - Continue writing `memory/notes/YYYY-MM-DD.md` only when that legacy file is already the active note for the target date or the user explicitly asks to keep the legacy convention.
@@ -19,7 +20,7 @@ This project participates in the Knowledge Tracker memory system. These directiv
 - Use `memory/scratch/` for uncertain project-only captures and in-flight notes that are not ready for `notes/`, `runs.md`, `learnings.md`, `decisions.md`, or `index.md`.
 - Scratch-only work should stay in `memory/scratch/`; do not create or update today's project note just because the user asked to work on scratch.
 - Use `memory/integrations/` for optional external connections such as Jira, Confluence, GitHub Issues, Linear, Slack/Teams, or manual draft-only publishing.
-- Use project-local skills for project-memory shortcuts when present:
+- Use consolidated project-local skills for project-memory shortcuts when present:
   - Codex skills: `.agents/skills/<skill>/SKILL.md`
   - Claude skills: `.claude/skills/<skill>/SKILL.md`
 - Treat `memory/commands/` as a legacy fallback only when project-local memory skills are missing.
@@ -28,12 +29,7 @@ This project participates in the Knowledge Tracker memory system. These directiv
 
 If the user starts a prompt with a project memory shortcut, or explicitly asks to record project memory, use the matching local skill:
 
-- `remember` - add a compact note to today's project memory.
-- `log` - record session work or a meaningful project change.
-- `run` - add or update an experiment, evaluation, or long-running job.
-- `decision` - record a project decision and rationale.
-- `learned` - record a durable finding or reusable lesson.
-- `status` - update the project context card.
+- `remember` - infer and record activity, runs, decisions, learnings, or status changes in the smallest canonical memory file.
 - `scratch` - capture an uncertain or in-flight project-local note.
 - `organise-scratch` - route project-local scratch notes into the right memory files.
 - `check-initialisation` - verify and align the project memory structure.
@@ -49,7 +45,7 @@ These skills are shortcuts. They do not override project-specific instructions o
 - When using a new device, server, environment, or repo path, update `memory/devices.md`.
 - When starting or finishing a long-running job, update `memory/runs.md`.
 - When project status, blocker, latest useful result, or next action changes, update `memory/index.md`.
-- When `memory/integrations/` exists, read `memory/integrations/index.md` before logging project work. Follow enabled integration policies, but never let missing external tools or authentication block local memory updates.
+- Read enabled integration policy when a memory update may publish externally. Never let missing tools or authentication block local memory updates.
 
 ### What To Record
 

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Plan Tomorrow"
-  short_description: "Create the next-day KB plan."
-  default_prompt: "Use $plan-tomorrow to create or update tomorrow's plan from synced memory."

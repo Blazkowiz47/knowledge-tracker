@@ -1,4 +1,0 @@
-interface:
-  display_name: "Ingest"
-  short_description: "Ingest changed project notes into global KB synthesis."
-  default_prompt: "Use $ingest to scan registered project memories and ingest missing or changed notes into global knowledge-base synthesis. Use $device-sync for non-primary device publishing."

@@ -1,5 +1,7 @@
 # Command: /summarise-month
 
+Internal compatibility primitive. Prefer `/review` unless a month-only refresh is explicitly needed.
+
 Create or refresh a monthly summary.
 
 ## Inputs

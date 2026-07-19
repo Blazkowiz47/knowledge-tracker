@@ -5,18 +5,18 @@ Use this vault as a scaffold for your own tracker.
 ## First Setup
 
 1. Rename the repository or vault if you want a personal name.
-2. Set `KB_NODE_NAME` to a stable lowercase device slug, such as `laptop` or `workstation-01`.
-3. Update `wiki/today.md` with today's date and first plan.
-4. Add your first project by following `system/procedures/initialise_project.md`.
-5. Use `wiki/scratch/` for quick captures until they have a clear home.
+2. Add the device and coordinator to `system/registry/nodes.yaml`, then set `KB_NODE_NAME` to that canonical slug.
+3. Run `/day start` to generate the first daily brief.
+4. Add the first project with `/initialise-project`; this updates `system/registry/projects.yaml`.
+5. Use `/capture` for notes whose destination may or may not be clear.
 
 ## Daily Loop
 
-1. Read `wiki/logs/index.md`.
+1. Run `/sync`, then `/day start`.
 2. Work in project repositories and keep project-specific detail in project `memory/`.
-3. Ingest useful project memory into workstream summaries.
-4. Update `wiki/today.md` with blockers, decisions, questions, and next actions.
-5. Sweep `wiki/scratch/` with `/organise-scratch` when captures pile up.
+3. Use `/capture` for meaningful knowledge during the day.
+4. Use `/review` when focus or workstream lifecycle needs attention.
+5. Run `/day close` for inbox cleanup, synthesis, and carry-forward.
 
 ## What Belongs Here
 

@@ -27,8 +27,8 @@ It must not edit target project source code, configs, experiment files, outputs,
    - ensure exactly one Knowledge Tracker memory block in `AGENTS.md`
    - ensure `CLAUDE.md` is a regular file whose first non-empty line is exactly `@AGENTS.md`
    - ensure required memory files, `memory/scratch/index.md`, and `memory/integrations/index.md` exist
-   - ensure project-local memory skills exist under `.agents/skills/` and `.claude/skills/` for `remember`, `log`, `run`, `decision`, `learned`, `status`, `scratch`, `organise-scratch`, and `check-initialisation`
-   - migrate legacy `memory/commands/` exact-template specs into project-local skills; preserve and report custom legacy specs instead of deleting them blindly
+   - ensure consolidated skills exist under `.agents/skills/` and `.claude/skills/` for `remember`, `scratch`, `organise-scratch`, and `check-initialisation`
+   - remove old direct-name skills and legacy commands only when they exactly match historical templates; preserve and report custom instructions
    - if an integration provider file already exists, align only its local scaffolding and skip any external checks that need unavailable tools or authentication
    - update the workstream page and daily log if alignment changed anything
 5. Verify the target project repository has not been staged, committed, or pushed.

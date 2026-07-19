@@ -1,5 +1,7 @@
 # Command: /summarise-day
 
+Internal compatibility primitive. Prefer `/day close` for normal daily synthesis.
+
 Finalize or refresh a daily summary.
 
 ## Inputs

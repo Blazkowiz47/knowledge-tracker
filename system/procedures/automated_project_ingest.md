@@ -21,7 +21,7 @@ Safely detect and ingest project-local memory notes across devices without corru
 
 Usually:
 
-- Known project paths from `wiki/workstreams/index.md`, future project registry files, or explicit user input
+- Canonical project paths from `system/registry/projects.yaml`, or explicit user input
 - Project notes matching:
   - `memory/notes/YYYY-MM-DD.md`
   - `memory/notes/YYYY-MM-DD-<node>.md`
@@ -59,10 +59,10 @@ Use these states for automated ingestion tracking:
 7. For device-local staging, compare each source against `system/sync/device-ingestions/<node>/ledger.yaml`; skip only sources with a `published` entry for the same project/source/hash.
 8. Add newly discovered or changed sources to the matching pending queue before attempting summarisation.
 9. Attempt summarisation by project and work date, merging all date-matching source notes.
-10. If global summarisation succeeds, update workstream pages, daily summaries, root ingestion ledger, root pending queue, and today's daily log.
+10. If global summarisation changes meaningful knowledge, update workstreams, work-date summaries, root ledger/queue, and the current human log.
 11. If device-local staging succeeds, update only `system/sync/device-ingestions/<node>/` and optional device summary paths; do not update global workstream pages, global daily logs, or root ledgers.
 12. If summarisation fails safely, leave existing summaries unchanged and keep or update the matching pending queue.
-13. Release the lock when one was acquired and commit/push only allowed knowledge-base changes.
+13. Update node-owned or coordinator status, release the lock, and commit/push only allowed knowledge-base changes.
 
 ## Limit And Failure Fallback
 
@@ -146,3 +146,4 @@ Publishing to device staging is not the same as global ingestion; the coordinato
 - If notes conflict, mark the relevant queue item as `conflict` and record the uncertainty rather than silently choosing one source.
 - Preserve work chronology and ingestion chronology separately: work belongs to `work_date`, while failed or successful automation attempts are logged on the current knowledge-base day.
 - Do not limit discovery to today's date unless the user or scheduler explicitly requested a date-scoped run.
+- Do not create human logs for successful no-op automation.

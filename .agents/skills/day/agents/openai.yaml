@@ -1,0 +1,4 @@
+interface:
+  display_name: "Day"
+  short_description: "Start or close the knowledge workday"
+  default_prompt: "Use $day to start with a current brief or close the day with clean synthesis and carry-forward."

@@ -10,9 +10,9 @@ Use this skill as a thin Codex adapter for the knowledge-base project-memory ini
 ## Workflow
 
 1. Read and follow this repository's `AGENTS.md`.
-2. Read and follow `system/procedures/maintain_daily_log.md`.
-3. Read and follow `system/procedures/initialise_project.md`.
-4. Treat the procedure as canonical. This skill should not duplicate or override it.
+2. Read and follow `system/commands/initialise-project.md`.
+3. Read every procedure referenced by that command.
+4. Treat those documents as canonical. This skill should not duplicate or override them.
 
 ## Inputs
 

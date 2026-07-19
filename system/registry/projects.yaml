@@ -1,0 +1,5 @@
+# Canonical project discovery registry.
+# Workstream lifecycle state remains canonical in each workstream index.
+
+version: 1
+projects: {}

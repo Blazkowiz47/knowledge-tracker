@@ -1,5 +1,7 @@
 # Command: /plan-tomorrow
 
+Internal compatibility primitive. Prefer `/day close` to carry unfinished work forward and prepare tomorrow.
+
 Create or update the next-day plan from synced memory.
 
 ## Steps

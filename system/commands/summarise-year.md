@@ -1,5 +1,7 @@
 # Command: /summarise-year
 
+Internal compatibility primitive. Prefer `/review` unless a year-only refresh is explicitly needed.
+
 Create or refresh a yearly summary.
 
 ## Inputs

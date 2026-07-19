@@ -1,4 +1,0 @@
-interface:
-  display_name: "Summarise"
-  short_description: "Summarise KB days, months, or years."
-  default_prompt: "Use $summarise to summarize the requested knowledge-base period."

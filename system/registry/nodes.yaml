@@ -1,0 +1,6 @@
+# Canonical knowledge-base node identities.
+# Add stable lowercase nodes before running device-aware sync.
+
+version: 1
+coordinator:
+nodes: {}

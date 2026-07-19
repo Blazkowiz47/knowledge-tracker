@@ -1,0 +1,4 @@
+interface:
+  display_name: "Doctor"
+  short_description: "Audit knowledge-base structure and sync health"
+  default_prompt: "Use $doctor to run a read-only audit of this knowledge base and prioritize any issues found."

@@ -1,5 +1,7 @@
 # Command: /log-day
 
+Internal compatibility primitive. Prefer `/capture` for meaningful knowledge and `/day close` for daily synthesis.
+
 Append a compact entry to today's knowledge-base daily log.
 
 ## Inputs

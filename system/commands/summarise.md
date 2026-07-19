@@ -1,5 +1,7 @@
 # Command: /summarise
 
+Internal summary dispatcher. Prefer `/day close` for ordinary daily synthesis and `/review` for portfolio-level synthesis.
+
 Dispatch to the appropriate summary command.
 
 ## Behavior

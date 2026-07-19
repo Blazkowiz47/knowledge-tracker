@@ -1,4 +1,0 @@
-interface:
-  display_name: "Summarise Year"
-  short_description: "Create or refresh a yearly summary."
-  default_prompt: "Use $summarise-year to create or refresh a knowledge-base yearly summary."

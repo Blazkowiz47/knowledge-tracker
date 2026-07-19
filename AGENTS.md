@@ -1,179 +1,107 @@
 # Knowledge Tracker Instructions
 
-This repository is the main knowledge base for the user's projects, research, experiments, development, decisions, and reusable concepts. Treat it as an Obsidian-compatible Markdown vault and as the source of truth for memory organization.
+This repository is an Obsidian-compatible knowledge base for projects, research, experiments, decisions, reusable concepts, and planning.
 
-## Core Model
+## Canonical Layers
 
-- `wiki/` contains maintained knowledge.
-- `wiki/workstreams/` contains the active lines of work. A workstream may be a project, method, experiment family, demo, paper direction, or development effort.
-- Project repositories remain outside this knowledge base. Link to them by absolute path.
-- Project repositories may have their own `memory/` folder for operational, date-wise memory and project-local scratch captures.
-- This knowledge base owns global synthesis, cross-project learning, daily planning, and high-level indexing.
-- Individual project memories own local operational detail: daily notes, runs, devices, decisions, and project-specific learnings.
+- External project repositories own operational truth in their project-local `memory/` folders.
+- `wiki/workstreams/<slug>/` owns compact, derived synthesis for one line of work.
+- `wiki/logs/` records meaningful knowledge and human activity, not routine automation telemetry.
+- `wiki/today.md` is a generated daily brief, refreshed through `/day start`.
+- `wiki/scratch/` is the knowledge-base inbox for captures whose final destination is uncertain.
+- `system/registry/` owns machine-readable project and node identity.
+- `system/sync/` owns device staging, ledgers, pending work, per-node status, and the coordinator status view.
 
-## Repository Boundary And Sync
+Project memory is authoritative. Knowledge-base synthesis is derived and may be refreshed when source notes change.
 
-- When operating from this knowledge-base repository, treat external project repositories as read-only by default.
-- The only default exceptions are explicit project memory initialization and project memory initialization checks: when the user asks to initialize, initialise, set up, add memory, verify, repair, align, or finish memory initialization for a project path, Codex may update only that project's memory infrastructure.
-- During project memory initialization and project memory initialization checks, allowed external-project edits are limited to the target project's `AGENTS.md` Knowledge Tracker memory block, `CLAUDE.md` import stub, `memory/` files, project-local Codex skills under `.agents/skills/`, and project-local Claude skills under `.claude/skills/`.
-- Do not edit external project source code, experiment scripts, configs, data files, outputs, or unrelated documentation from a knowledge-base session.
-- Do not stage, commit, or push changes in external project repositories from a knowledge-base session, including project memory initialization changes.
-- If any other task would require modifying an external project repository, stop and ask the user to run Codex from that project repository or to explicitly override this boundary.
-- After finishing any knowledge-base file edits, run `git status --short`.
-- Stage only the knowledge-base files changed for the current task.
-- Create a compact commit describing the memory, wiki, or procedure update.
-- Push the current branch to its configured remote.
-- If commit or push fails, report the failure and leave the repository state clear.
+## Repository Boundary
 
-## Required Procedures
+- Treat external project repositories as read-only by default.
+- The default write exceptions are explicit project-memory initialization and initialization checks. Those workflows may edit only the target project's marked `AGENTS.md` memory block, `CLAUDE.md` import stub, `memory/`, `.agents/skills/`, and `.claude/skills/`.
+- Public knowledge-base commands write only inside this repository unless the user explicitly authorizes a named external-project write.
+- Never edit external project source, configs, datasets, outputs, or unrelated documentation from a knowledge-base task.
+- Never stage, commit, or push an external project repository unless the user explicitly overrides this boundary for that repository.
 
-At the start of a knowledge-base session, or before writing any knowledge-base log entry, follow:
+After knowledge-base edits, run `git status --short`, stage only current-task files, create a compact commit, and push the current branch. Report failures and leave the repository state clear.
 
-- `system/procedures/maintain_daily_log.md`
+## Public Command Surface
 
-If the user's prompt begins with a slash command such as `/log-day`, `/summarise-day`, `/sync`, or `/check-initialisation`, read the matching command spec in:
+| Command | Purpose |
+|---|---|
+| `/sync` | Role-aware device publishing or coordinator aggregation. |
+| `/capture` | Record and route a learning, decision, run, status change, activity, or uncertain note. |
+| `/day start` | Regenerate today's brief from current workstream and sync state. |
+| `/day close` | Organize the inbox, summarize meaningful work, and carry forward next actions. |
+| `/review` | Classify work as `now`, `next`, `waiting`, `parked`, or `archived`. |
+| `/doctor` | Run a read-only structural and sync-health audit; fix only when explicitly requested. |
+| `/initialise-project` | Initialize project-local memory and its workstream. |
+| `/check-initialisation` | Verify and align initialized project memory. |
 
-- `system/commands/`
+Command specs live in `system/commands/`. Detailed algorithms live in `system/procedures/`. Repo-local skills are thin discovery adapters.
 
-Codex repo-local skill adapters for these commands live in:
+Low-level commands such as `/device-sync`, `/aggregate-sync`, `/ingest`, individual summary commands, `/log-day`, `/plan-tomorrow`, and `/organise-scratch` remain internal compatibility primitives. Do not make users choose among them when a public command can select the behavior.
 
-- `.agents/skills/`
+## Session Startup And Logging
 
-Use command specs as shortcuts to the canonical procedures. They do not replace this `AGENTS.md` file or the procedure documents.
-The skills are discoverability and invocation wrappers only; if a skill and command spec disagree, follow this file, then the command spec, then the referenced procedure.
+- For read-only questions, begin with `wiki/logs/index.md`; do not create a daily log merely because a session started.
+- Before writing human-facing knowledge or logs, follow `system/procedures/maintain_daily_log.md`.
+- Successful no-op publisher syncs update `system/sync/device-status/<node>.yaml`; the coordinator refreshes `system/sync/status.yaml`.
+- Write human logs only for meaningful synthesis, decisions, planning, curation, structural changes, or failures requiring attention.
 
-When the user asks to initialize, initialise, set up, or add memory for a project path, follow:
+## Registry And Node Rules
 
-- `system/procedures/initialise_project.md`
+- `system/registry/nodes.yaml` is the canonical node registry and coordinator declaration.
+- `system/registry/projects.yaml` maps workstreams to project paths per node.
+- `KB_NODE_NAME` must resolve to a canonical node or declared alias. Ask during interactive runs when unknown; unattended runs fail safely.
+- Prefer exactly one project daily note per project/work-date/node: `memory/notes/YYYY-MM-DD-<node>.md`.
+- Topic-specific working documents belong in `memory/scratch/`; do not encode topics after the node suffix.
+- Continue reading unsuffixed daily notes as legacy/default-node notes.
 
-When the user asks to ingest today's work from project memories, follow:
+## Sync Model
 
-- `system/procedures/ingest_project_day.md`
+- Publishers write only their node-owned staging, device summaries, and device status.
+- The coordinator is the only unattended writer of global workstream synthesis, combined summaries, root ledgers, `wiki/today.md`, and the combined status view.
+- Retain device staging as evidence and deduplicate by project/source/hash.
+- Pull with `git pull --ff-only`; never force-push automation output.
+- Follow `system/procedures/automated_project_ingest.md` for retry and failure fallback.
 
-When the user asks to sync, ingest all registered project memories, or ingest changed project memories on the primary/coordinator machine, use the same procedure in changed-source mode: scan registered project memory notes, compare them with `system/sync/ingestion-ledger.yaml`, and ingest missing or changed sources rather than only today's note.
+## Workstream Model
 
-When the user asks for multi-device sync, node-local sync, device sync, or conflict-safe sync from a non-primary device, follow:
+Every workstream contains `index.md`, `learnings.md`, `decisions.md`, `runs.md`, and `logs.md`.
 
-- `system/commands/device-sync.md`
+Each `index.md` begins with:
 
-When the user asks to merge device sync outputs, aggregate device sync, run the coordinator pass, or perform the one-merger workflow, follow:
+```yaml
+---
+workstream: example
+state: next
+last_activity: 2026-07-19
+review_after:
+---
+```
 
-- `system/commands/aggregate-sync.md`
+Allowed states are `now`, `next`, `waiting`, `parked`, and `archived`. Keep at most three `now` items unless a broader focus is intentional. The Context Card stores descriptive status, domain, tags, paths, latest result, blocker, and next action.
 
-When ingestion is automated, scheduled, retried, or must handle model/rate/quota/weekly-limit fallback, follow:
+`wiki/workstreams/index.md` is a compact state-grouped portfolio. Do not grow a duplicate chronological update feed; dated history belongs in workstream logs.
 
-- `system/procedures/automated_project_ingest.md`
+## Project Memory Initialization
 
-When creating day, month, or year summaries across multiple devices, follow:
-
-- `system/procedures/device_aware_summaries.md`
-
-When the user asks to plan tomorrow from synced memories, follow:
-
-- `system/procedures/plan_tomorrow.md`
-
-Do not invent a different project memory structure unless the user explicitly asks to redesign the system.
-
-## Knowledge-Base Device Sync Model
-
-- Use `KB_NODE_NAME` as the stable lowercase identity for each device or server.
-- Device-local sync publishes per-node KB staging state only. It may write under:
-  - `system/sync/device-ingestions/<node>/`
-  - `system/sync/device-days/<node>/`
-  - `system/sync/device-months/<node>/`
-  - `system/sync/device-years/<node>/`
-- Device-local sync must not update shared/global synthesis surfaces:
-  - `wiki/logs/`
-  - `wiki/workstreams/`
-  - `wiki/today.md`
-  - `system/sync/ingestion-ledger.yaml`
-  - root-level `system/sync/pending-ingestions.yaml`
-- The coordinator/aggregation pass is the only automated workflow that should merge device staging into shared/global KB files.
-- The coordinator records incorporated source hashes in `system/sync/ingestion-ledger.yaml`; device staging files are retained as evidence and skipped by ledger/hash rather than deleted.
-- If more than one device must run global aggregation, stagger the runs and require `git pull --ff-only`; never force-push automation output.
-
-## Project Memory Initialization Rules
-
-- Existing project `AGENTS.md` files must be preserved.
-- `AGENTS.md` is the canonical cross-agent instruction file.
-- `CLAUDE.md` must be a regular file that imports `AGENTS.md` with `@AGENTS.md` as its first line.
-- When initializing project memory from this knowledge base, ensure the target project has a `CLAUDE.md` import stub after preserving any existing Claude-only instructions below the import.
-- Add or update only the clearly delimited Knowledge Tracker memory block in project `AGENTS.md`:
-  - `<!-- BEGIN KNOWLEDGE TRACKER MEMORY DIRECTIVES -->`
-  - `<!-- END KNOWLEDGE TRACKER MEMORY DIRECTIVES -->`
-- If a project already has the block, replace only that block.
-- If a project has `AGENTS.md` but no block, append the block to the end.
-- If a project has no `AGENTS.md`, create one containing the block.
-- If a project has an existing `CLAUDE.md`, do not discard it. Preserve unique Claude-only instructions below the `@AGENTS.md` import when safe; if the preservation is ambiguous, stop and ask the user.
-- Do not remove, rewrite, reorder, or weaken existing project-specific instructions.
-- Generate or maintain `memory/scratch/index.md` so project-local agents have a clear place for uncertain project-only captures and in-flight working notes.
-- Scratch-only project work should stay in `memory/scratch/`; agents should not create or update a project daily note unless the scratch result is promoted, a run/decision/learning/status changes, or the user explicitly asks to log it.
-- Generate or maintain `memory/integrations/index.md` so project-local agents have a device-portable place for optional external connections.
-- Treat integrations as optional. Missing tools, missing authentication, or unavailable network access must never block local project memory updates; draft or skip external publishing according to the integration policy.
-- Generate or maintain project-local memory skills under `.agents/skills/` and `.claude/skills/` so Codex and Claude can use shortcuts named `remember`, `log`, `run`, `decision`, `learned`, `status`, `scratch`, `organise-scratch`, and `check-initialisation`.
-- Treat `memory/commands/` as a legacy command-spec surface. Do not create it for new projects by default. During `/check-initialisation`, migrate exact-template legacy command specs into project-local skills; preserve and report custom legacy command specs instead of deleting them blindly.
-- Prefer project daily notes named `memory/notes/YYYY-MM-DD-<node>.md` for new work, where `<node>` is a stable lowercase device/server slug.
-- If the stable `<node>` name is not known, ask the user for it before creating or writing a new node-specific project note; do not invent generic names such as `server`, `gpu`, `desktop`, or `default`.
-- Preserve backward compatibility by reading existing `memory/notes/YYYY-MM-DD.md` files as legacy/default-node notes. Continue writing an unsuffixed note only when it is already the active note for that date or the user explicitly asks to keep the legacy convention.
-- Do not stage, commit, or push the target project repository after initializing memory from this knowledge base.
-- Do not create Python, shell, or other executable initializer scripts for this workflow. The procedure documents are the automation contract for Codex and Claude.
-
-## Wiki Maintenance Rules
-
-- Read `wiki/logs/index.md` by default for recent memory before opening detailed daily logs.
-- Keep `wiki/logs/index.md` compact as the default log startup surface.
-- Keep detailed daily logs under `wiki/logs/YYYY/MM/DD.md`.
-- Keep daily summaries in `wiki/logs/YYYY/MM/index.md`; summaries should be brief and concise, but not artificially limited to one line.
-- Keep monthly summaries in `wiki/logs/YYYY/MM/summary.md` and yearly summaries in `wiki/logs/YYYY/summary.md`.
-- Keep device-scoped summaries under `system/sync/device-days/<node>/`, `system/sync/device-months/<node>/`, and `system/sync/device-years/<node>/` when requested. Use `KB_NODE_NAME` as the node identity and ask the user if it is missing.
-- Keep device-local ingestion staging under `system/sync/device-ingestions/<node>/` when running conflict-safe device sync. Do not delete staged device files after aggregation; use global ledger entries to avoid duplicate incorporation.
-- Combined month and year summaries should use existing combined lower-level summaries when available, but must fall back to device summaries rather than forcing combined daily or monthly summaries to be created first.
-- Use `Pending` for the active day, month, or year until rollover or explicit summary.
-- Keep every `index.md` useful as a fast overview.
-- Update `wiki/workstreams/index.md` whenever a workstream is created, renamed, archived, or meaningfully reclassified.
-- Create or update the workstream folder `wiki/workstreams/<workstream-slug>/` (with `index.md`, `learnings.md`, `decisions.md`, `runs.md`, `logs.md`) for every initialized project memory. See § Workstream Folder Layout for the file responsibilities.
-- Keep pages compact. Prefer durable synthesis, links, paths, and next actions over long pasted material.
-- Do not paste giant logs, full papers, full transcripts, or bulky experiment output into the wiki.
-- If a detail is only useful as evidence, link to the file/path where it lives and summarize the durable lesson.
-- Record meaningful curation, structural changes, and daily ingestion in the current daily log under `wiki/logs/YYYY/MM/DD.md`.
-- Treat project-local notes as authoritative and knowledge-base summaries as derived, refreshable state.
-- If summarisation fails due to model, rate, quota, weekly-limit, network, or availability limits, defer ingestion safely rather than writing a fabricated summary.
-- Use Obsidian-friendly Markdown links where useful, especially between concepts, workstreams, decisions, and questions.
-
-## Workstream Folder Layout
-
-Every active workstream lives in its own folder under `wiki/workstreams/<slug>/` with these files:
+Follow `system/procedures/initialise_project.md` and preserve all project instructions. The marked block is:
 
 ```text
-wiki/workstreams/<slug>/
-  index.md          # Context Card + Active Threads + Files links + Links
-  learnings.md      # durable findings
-  decisions.md      # decision ledger
-  runs.md           # run highlights
-  logs.md           # date-headed activity entries, newest first
+<!-- BEGIN KNOWLEDGE TRACKER MEMORY DIRECTIVES -->
+<!-- END KNOWLEDGE TRACKER MEMORY DIRECTIVES -->
 ```
 
-`index.md` must preserve a compact context card near the top:
+New projects receive four public memory skills under both `.agents/skills/` and `.claude/skills/`: `remember`, `scratch`, `organise-scratch`, and `check-initialisation`. `remember` infers activity, runs, decisions, learnings, and status destinations.
 
-```md
-## Context Card
-Status:
-Domain:
-Tags:
-Project path:
-Devices/servers:
-Latest useful result:
-Current blocker:
-Next action:
-```
+Old direct-name skills and `memory/commands/` are compatibility surfaces. Remove only exact-template copies after the consolidated skills exist; preserve and report custom instructions.
 
-Update the context card first when the workstream state changes. `index.md` stays slim — the only growing surface inside it is `Active Threads`, which gets trimmed when threads close (durable outcomes move into `learnings.md` or `decisions.md`; dated activity moves into `logs.md`).
+`CLAUDE.md` must be a regular file whose first non-empty line is `@AGENTS.md`. Do not stage, commit, or push target-project initialization changes from this repository.
 
 ## Operating Bias
 
-- Optimize for context recovery. The next agent session should understand the state quickly.
-- Prefer one clear place over many clever places.
-- If information belongs to one project, keep it in that project memory and summarize it in the relevant workstream.
-- When uncertain project-only information is not ready for today's note, a run, a decision, or a learning, capture it under that project's `memory/scratch/` and route it later with `/organise-scratch`; scratch-only work does not need a project daily note.
-- If information cuts across projects, summarize it in the relevant workstream indexes or drop a short capture into `wiki/scratch/` (one file per capture) until a clear home exists; `/organise-scratch` routes it at end of day.
-- When uncertain where something belongs, place a short note in `wiki/scratch/` and record the uncertainty.
+- Optimize for rapid context recovery and low cognitive overhead.
+- Keep one canonical source for each fact; generate indexes instead of copying prose manually.
+- Prefer durable synthesis, links, paths, and explicit next actions over raw output.
+- Leave uncertain cross-project material in `wiki/scratch/` until `/capture`, `/day close`, or `/review` can route it safely.

@@ -32,9 +32,9 @@ Next action:
 
 - See `decisions.md`.
 
-## Commands
+## Memory Skills
 
-- See `commands/index.md`.
+- Use project-local `remember`, `scratch`, `organise-scratch`, and `check-initialisation` skills under `.agents/skills/` or `.claude/skills/`.
 
 ## Scratch
 

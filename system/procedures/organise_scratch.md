@@ -22,12 +22,12 @@ For each captured note, choose one and only one destination:
 
 | Capture shape | Destination |
 |---|---|
-| Multi-day, project-specific investigation or working doc | `<project_path>/memory/scratch/<topic>.md` (create if missing; append if it exists) |
-| Same-day, project-specific operational detail | Append to `<project_path>/memory/notes/YYYY-MM-DD-<node>.md` under the most relevant section |
-| Durable project finding (a confirmed observation, failed approach, or reusable idea) | `<project_path>/memory/learnings.md` under the right subhead |
-| Project decision and rationale | New row in `<project_path>/memory/decisions.md` |
-| New device, server, or environment used | New row in `<project_path>/memory/devices.md` |
-| Experiment or long-running job summary | New row in `<project_path>/memory/runs.md` |
+| Multi-day, project-specific investigation | Workstream Active Threads, or leave with a proposed project-memory destination |
+| Same-day, project-specific operational detail | Relevant workstream `logs.md` entry |
+| Durable project finding | Workstream `learnings.md` |
+| Project decision and rationale | Workstream `decisions.md` |
+| New node, server, or path | Registries and workstream Context Card |
+| Experiment or long-running job summary | Workstream `runs.md` |
 | Cross-project rough idea or open question | `wiki/today.md` Questions section, or the relevant `wiki/workstreams/<slug>/` (Active Threads in `index.md`, or `logs.md` if dated) |
 | Knowledge-base daily log fodder | `wiki/logs/YYYY/MM/DD.md` under `## Entries` |
 | Ephemeral: resolved, superseded, duplicate, or no-longer-useful | Delete the scratch file |
@@ -37,12 +37,7 @@ When in doubt about which destination fits, ask the user. Do not auto-route unce
 
 ## Write Scope
 
-This procedure routes captures into existing structures, so the usual repository boundary rule applies:
-
-- Allowed external-project edits are limited to that project's `memory/` files (`index.md`, `devices.md`, `runs.md`, `learnings.md`, `decisions.md`, `notes/`, `scratch/`).
-- Do not edit external project source code, experiment scripts, configs, data files, outputs, or unrelated documentation.
-- Do not stage, commit, or push the target project repository.
-- Allowed knowledge-base edits include `wiki/scratch/`, `wiki/today.md`, `wiki/workstreams/<slug>/index.md`, `wiki/workstreams/index.md`, and the current `wiki/logs/YYYY/MM/DD.md`.
+This knowledge-base procedure writes only inside this repository. If a capture belongs only in project-local memory, leave it with a proposed destination and ask the user to run the project-local organizer or explicitly authorize a named-project write.
 
 ## Steps
 
@@ -50,19 +45,18 @@ This procedure routes captures into existing structures, so the usual repository
 2. For each capture file:
    1. Read its content.
    2. Decide the destination using the routing table above. If the project path is unclear, ask the user; do not infer from file name alone.
-   3. If the destination is a project `memory/scratch/<topic>.md` that does not exist yet, create it using `system/templates/project-scratch-doc.md` as a starting shape, then append the capture's content under the appropriate section.
-   4. For other destinations, append or insert the capture's content using the destination's existing structure (tables get new rows; sections get new bullets; daily notes get new entries with date and node context where relevant).
+   3. Append or insert content using the destination's existing structure; dated activity uses one `## YYYY-MM-DD` heading.
+   4. Remove the source capture after its content has been routed successfully.
    5. If the capture is ephemeral, delete the file outright.
    6. If the capture remains unclear after a clarifying question, leave it untouched.
 3. After all routing:
-   - Update `<project_path>/memory/index.md` Active Threads when a `memory/scratch/<topic>.md` was created or closed, or when status, blocker, latest result, or next action changed.
    - Update `wiki/workstreams/<slug>/index.md` Context Card and Active Threads when a routed item changes status, blocker, latest result, or next action.
    - Workstream durable findings go to `wiki/workstreams/<slug>/learnings.md`; workstream-level decisions go to `wiki/workstreams/<slug>/decisions.md`; notable runs to `wiki/workstreams/<slug>/runs.md`; dated activity entries to `wiki/workstreams/<slug>/logs.md` under a `## YYYY-MM-DD` heading.
-   - Update `wiki/workstreams/index.md` Recently Updated row when relevant.
+   - Rebuild the relevant state-grouped row in `wiki/workstreams/index.md` when the workstream's state or summary changes.
    - Append a single entry to `wiki/logs/YYYY/MM/DD.md` summarising what was routed where (one short line per non-trivial route is enough; do not enumerate trivial deletions).
 4. Verify:
    - `wiki/scratch/` contains only `README.md` plus any captures genuinely left for the next pass.
-   - No target project repositories were staged, committed, or pushed.
+   - No external project repositories were modified, staged, committed, or pushed.
    - Routed content is in exactly one place; the source capture file is either deleted or clearly marked as still-in-flight.
 5. Follow the root `AGENTS.md` sync rule for the knowledge-base repository only:
    - Run `git status --short` in the knowledge-base repository.

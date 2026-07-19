@@ -1,4 +1,0 @@
-interface:
-  display_name: "Device Sync"
-  short_description: "Publish this node's changed project memories to conflict-safe KB staging."
-  default_prompt: "Use $device-sync to pull the knowledge base, publish this node's changed project-memory sources into node-owned KB staging, and push those staging changes."

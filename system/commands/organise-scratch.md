@@ -1,5 +1,7 @@
 # Command: /organise-scratch
 
+Internal compatibility primitive. Prefer `/day close` for the normal end-of-day inbox sweep.
+
 Sweep `wiki/scratch/` and route each captured note to its proper home.
 
 ## Inputs
@@ -9,7 +11,7 @@ Sweep `wiki/scratch/` and route each captured note to its proper home.
 ## Steps
 
 1. Follow `system/procedures/organise_scratch.md`.
-2. Stage and commit only knowledge-base files changed by the routing.
-3. Do not stage, commit, or push any external project repository, even if the routing edited files inside its `memory/` folder.
-4. Push the current branch to the configured remote.
-5. Report a short summary: per scratch file, where it was routed (project path, target file) or that it was deleted or left in place.
+2. Keep external project repositories unchanged. Leave captures with proposed destinations when project-local writing would be required.
+3. Stage and commit only knowledge-base files changed by routing.
+4. Push the current branch.
+5. Report where each capture was routed, deleted, or left.

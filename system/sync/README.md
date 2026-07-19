@@ -1,57 +1,43 @@
 # Sync Conventions
 
-This folder holds lightweight cross-device coordination state for the knowledge base.
+Use `/sync`; it selects publisher or coordinator behavior from `system/registry/nodes.yaml`.
 
-## Node Identity
+## Identity And Discovery
 
-Each device or server should set:
+- `system/registry/nodes.yaml` declares nodes, aliases, roles, and the coordinator.
+- `system/registry/projects.yaml` maps workstreams to project paths per node.
+- `KB_NODE_NAME` must resolve through the node registry.
+- Do not discover projects by parsing portfolio Markdown.
 
-```text
-KB_NODE_NAME
-```
+## Publisher-Owned State
 
-Use a stable lowercase node slug, for example `mobai`, `oslo-laptop`, `workstation-01`, or `a100-node-01`.
-
-## Device Summaries
-
-Device summaries are optional source summaries. They are never overwritten by combined summaries.
+Each publisher may write only:
 
 ```text
-system/sync/device-days/<node>/YYYY-MM-DD.md
-system/sync/device-months/<node>/YYYY/MM.md
-system/sync/device-years/<node>/YYYY.md
+system/sync/device-ingestions/<node>/
+system/sync/device-days/<node>/
+system/sync/device-months/<node>/
+system/sync/device-years/<node>/
+system/sync/device-status/<node>.yaml
 ```
 
-Combined summaries stay in:
+Retain staging after aggregation. Node ledgers record published project/source/hash identities.
 
-```text
-wiki/logs/YYYY/MM/DD.md
-wiki/logs/YYYY/MM/summary.md
-wiki/logs/YYYY/summary.md
-```
+## Coordinator-Owned State
 
-Use `system/procedures/device_aware_summaries.md` for source selection and lazy merging rules.
+The coordinator may update global workstreams/logs, `wiki/today.md`, root ledgers/queues, and `system/sync/status.yaml`. It incorporates each current staged project/source/hash once.
 
-## Device Ingestion Staging
+Successful no-op runs update operational status rather than human logs. Meaningful ingestion and failures requiring attention may enter human logs.
 
-Device ingestion staging is the conflict-safe publishing layer between project-local notes and global KB synthesis.
+## Note Identity
 
-```text
-system/sync/device-ingestions/<node>/ledger.yaml
-system/sync/device-ingestions/<node>/pending-ingestions.yaml
-system/sync/device-ingestions/<node>/YYYY-MM-DD.md
-```
+Prefer one `memory/notes/YYYY-MM-DD-<node>.md` per project/work-date/node with explicit `node:` frontmatter. Topic documents belong in `memory/scratch/`; arbitrary suffixes are not node identities. Unsuffixed daily notes remain legacy/default-node sources.
 
-Use these files for `/device-sync` on non-primary devices. A device may update only its own `<node>` folder. The date-named Markdown files hold compact published source records for that node; the node ledger records source notes already published to staging.
+## Failure Handling
 
-Do not delete device staging files after the coordinator has merged them. The global coordinator skips duplicate incorporation by comparing project/source/hash entries in `system/sync/ingestion-ledger.yaml`.
+- Root pending state is coordinator-owned; device pending state stays node-owned.
+- Never mark a source incorporated unless target synthesis was written.
+- Preserve useful synthesis on model, quota, network, or availability failure.
+- Pull with `git pull --ff-only`; never force-push automation output.
 
-## Pending Ingestion
-
-Use root-level `pending-ingestions.yaml` only for global/coordinator ingestion state. Device-local deferred sources belong under `system/sync/device-ingestions/<node>/pending-ingestions.yaml`. See `pending-ingestions.example.yaml`.
-
-## Ingestion Ledger
-
-Use root-level `ingestion-ledger.yaml` to record project source notes that were successfully synthesized into global knowledge-base files. `/sync`, `/ingest`, and `/aggregate-sync` compare source hashes against this ledger so older missing notes and changed notes are not skipped merely because their work date is not today.
-
-Do not update root-level `ingestion-ledger.yaml` from `/device-sync`; node-local publishing uses `system/sync/device-ingestions/<node>/ledger.yaml`.
+See the ingestion procedures for detailed transitions.

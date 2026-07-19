@@ -1,5 +1,7 @@
 # Command: /aggregate-sync
 
+Internal coordinator primitive selected automatically by `/sync`.
+
 Coordinator merge for conflict-safe multi-device sync.
 
 ## Purpose
@@ -8,8 +10,7 @@ Run from the primary/coordinator machine. Pull all device-staged KB sync outputs
 
 ## Steps
 
-1. Follow `system/procedures/maintain_daily_log.md`.
-2. Run `git fetch` in the knowledge-base repository.
+1. Run `git fetch` in the knowledge-base repository.
 3. Run `git pull --ff-only` before reading device staging or writing global files.
 4. Read `system/sync/README.md` and follow the device-staging ownership rules.
 5. Read existing device staging under:
@@ -23,12 +24,12 @@ Run from the primary/coordinator machine. Pull all device-staged KB sync outputs
    - update root-level `system/sync/pending-ingestions.yaml` only for global pending/deferred aggregation state
 8. Do not delete device staging files after aggregation. Treat them as evidence and deduplicate through the global ledger.
 9. Keep project repositories read-only; aggregation should not require editing external project repositories.
-10. Append a compact aggregation entry to today's knowledge-base daily log.
+10. Update `system/sync/status.yaml`. Append a human log only when meaningful synthesis changed or a failure needs attention.
 11. Run `git status --short --branch`.
 12. Stage only knowledge-base files changed by this aggregation pass.
 13. If there are staged changes, create a compact commit message such as `Aggregate device sync outputs`.
 14. Push the current branch to its configured remote.
-15. If no new device-staged sources needed aggregation, report that global synthesis is current.
+15. If no new staged sources needed aggregation, report current without touching human logs.
 16. If fetch, pull, aggregation, commit, or push fails, report the failure and leave the repository state clear.
 
 ## Output

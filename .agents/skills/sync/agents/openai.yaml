@@ -1,4 +1,4 @@
 interface:
   display_name: "Sync"
-  short_description: "Coordinator sync: pull, ingest changed notes globally, and push KB changes."
-  default_prompt: "Use $sync on the primary/coordinator machine to pull the knowledge base, ingest missing or changed registered project memories into global KB state, and push KB changes."
+  short_description: "Role-aware knowledge-base synchronization"
+  default_prompt: "Use $sync to select this node's publishing or coordinator workflow and synchronize the knowledge base safely."

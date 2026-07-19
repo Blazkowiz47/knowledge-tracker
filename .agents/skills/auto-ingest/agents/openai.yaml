@@ -1,4 +1,0 @@
-interface:
-  display_name: "Auto Ingest"
-  short_description: "Detect and ingest changed project notes."
-  default_prompt: "Use $auto-ingest to detect changed project memory notes and ingest them safely."

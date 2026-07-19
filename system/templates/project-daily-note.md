@@ -3,6 +3,7 @@ date: {{DATE}}
 work_date: {{DATE}}
 project: {{PROJECT_NAME}}
 node: {{NODE}}
+note_kind: daily
 node_type:
 device:
 server:
@@ -16,6 +17,8 @@ tags: [{{TAGS}}]
 ---
 
 # {{DATE}}
+
+Use exactly one daily note for this project/date/node. Put topic-specific working documents in `memory/scratch/` rather than adding a topic suffix to this filename.
 
 ## Intent
 
